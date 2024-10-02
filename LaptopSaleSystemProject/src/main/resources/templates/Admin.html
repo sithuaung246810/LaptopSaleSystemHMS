@@ -1,0 +1,1000 @@
+<!-- <!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+          
+ 
+   
+    <title>Document</title>
+    <style>
+    
+    /* test */
+ @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');   
+:root{
+	/*hue-saturation-lightness-alpha*/
+	--primary-color: hsl(330,87%,17%);
+	--secondary-color: hsla(203,100%,13%,1);
+}
+ 
+body{
+	font-family: 'Source Sans Pro', sans-serif;
+	width:100%;
+}
+ 
+/*Start Header*/
+ 
+header{
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	position: relative;
+}
+ 
+/*Start nav bar*/
+ 
+.navbar{
+	background: linear-gradient(rgba(0,0,0,0.6),var(--secondary-color));
+	padding: 10px 20px;
+	transition: all .7s;	
+}
+
+.navmenus{
+	background: linear-gradient(rgba(0,0,0,0.6),var(--secondary-color));
+	padding: 5px 30px;
+}
+ 
+.menuitems{
+	color: #eeee;
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+.menuitems:hover{
+	color: lightblue;
+}
+ 
+.menuitems .nav-tag{
+	overflow:hidden;
+}
+
+/*End nav bar*/
+
+.hero {
+    background-image: url('/laptopImages/llogo2.png');
+    background-size: cover;
+    background-position:center;
+    height: 670px;
+    width:100%;
+    display:flex;
+    align-items: center;
+    position: relative;
+}
+ 
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}
+ 
+.hero .container {
+    position: relative; /* Ensure text is above the overlay */
+}
+ 
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+}
+
+.hero .btn-light {
+    font-weight: 600;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+ 
+.hero .btn-light:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-decoration:none;
+}
+ 
+h2{
+	text-align:center;
+	font-weight:bold;
+}
+#welcome{
+	margin-top:20px;
+}
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px;
+    max-width: 1200px;
+    height:380px;
+    margin: auto;
+    gap: 20px;
+}
+ 
+.card{
+	
+	background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.card .content{
+			width: 80%;
+			height: 40px;
+			background-color: red;
+			text-align: center;
+			position: absolute;
+			bottom: 0;
+			left: 10%;
+			transition: all 0.5s;
+		}
+
+	.card .content h4{
+			text-transform: uppercase;
+			margin-top: 10px;
+  		 	margin-bottom: 10px;
+  		 	font-size: 15px;
+    		color: green;			
+		}
+
+	.card .content p{
+			width: 80%;
+			font-size: 16px;
+			margin:10px auto;
+			color:black;
+			opacity: 0;
+			transition: all 0.5s;
+		}
+
+	.card .content .action-button{
+			text-decoration: none;
+			background: linear-gradient(135deg, #6e45e2, #88d3ce);
+			color: #fff;
+			border: none;
+			font-size: 16px;
+			padding:10px 20px;
+			border-radius: 10px;
+			/* display: inline-block; */
+			cursor: pointer;
+			margin-top: 10px;
+			display:flex;
+   		 	align-items: center;
+  		 	justify-content: center;  		  
+			opacity: 0;
+			transition: background 0.3s ease, transform 0.3s ease;
+			transition: all 0.5s;
+		}
+
+		.card:hover .content{
+			width:100%;
+			height: 100%;
+			left: 0;
+		}
+
+		.card:hover p,.card:hover  .action-button{
+			opacity: 1;
+			transition-delay: 0.5s;
+		}
+
+		.card .imgbox{
+			width: 100%;
+			height: 100%;
+		}
+
+		.imgbox img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: all 0.5s;
+		}
+
+		.card:hover .imagbox img{
+			opacity: 0;
+		}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+    background: #88d3ce;
+    text-decoration: none;    
+	transform: scale(0.8);	
+}
+ 
+a{
+	color:white;
+}
+#navbar1{
+	align-items:right;
+}
+
+/* test */
+.card{
+	background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;	
+	position: relative;
+	overflow: hidden;
+		}
+
+	.card .content{
+			width: 80%;
+			height: 80px;
+			background-color: #fff;
+			text-align: center;
+			position: absolute;
+			bottom: 0;
+			left: 10%;
+			transition: all 0.5s;
+		}
+
+	.card .content h4{
+			text-transform: uppercase;
+			font-size: 20px;
+			margin-top: 20px;
+  		 	margin-bottom: 20px;
+    		color: #333;			
+		}
+
+	.card .content p{
+			width: 80%;
+			font-size: 16px;
+			margin:10px auto;
+			color:black;
+			opacity: 0;
+			transition: all 0.5s;
+		}
+
+	.card .content .action-button{
+			text-decoration: none;
+			background-color: #000;
+			color: #fff;
+			font-size: 14px;
+			padding:10px 15px;
+			display: inline-block;
+			margin-top: 10px;
+			opacity: 0;
+			transition: all 0.5s;
+		}
+
+		.card:hover .content{
+			width:100%;
+			height: 100%;
+			left: 0;
+		}
+
+		.card:hover p,.card:hover  .action-button{
+			opacity: 1;
+			transition-delay: 0.5s;
+		}
+
+		.card .imgbox{
+			width: 100%;
+			height: 100%;
+		}
+
+		.imgbox img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: all 0.5s;
+		}
+
+		.card:hover .imagbox img{
+			opacity: 0;
+		}
+
+.content h4 b {
+	text-decoration: none;
+}
+
+.action-button a:hover {
+	text-decoration: none;
+}
+
+</style>
+</head>
+<body>
+	Start Header Section
+	<header>
+		<nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a href="homepage.html" class="navbar-brand text-light mx-3">
+                    <img src="laptopImages/favicon.png" alt="Y60 Laptop Sales Logo" width="50px">
+                    <span class="text-uppercase fw-bold h2 mx-1">HMS <span class="h3">LAPTOP SALES</span></span>
+                </a>
+             
+              	<div id="nav" class="navbar-collapse collapse justify-content-end text-uppercase fw-bold">
+					<ul class="navbar-nav">
+						<li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin" id="homeBtn">HOME</a></li>
+                        <li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin/laptops">INVENTORIES</a></li>
+                        <li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin/historys">PURCHASE HISTORY</a></li>
+                        <li class="nav-item" th:if="${session.email == null}">
+                            <a class="nav-link mx-2 menuitems" href="/login">LOG IN</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.email != null}">
+                            <a class="nav-link mx-2 menuitems" href="/logout">LOG OUT</a>
+                        </li>
+              
+					</ul>
+                </div>
+               
+             </div>
+        </nav>
+   </header>
+   <div>
+  
+     <p>The total number of Admins is: <span th:text="${acount}">0</span></p>
+   	 <p>The total number of users is: <span th:text="${ucount}">0</span></p>
+   	  <p>The total number of Ban users is: <span th:text="${bancount}">0</span></p>
+   	 <p>The total number of laptops is: <span th:text="${lcount}">0</span></p>
+   	 <p>The total number of Brands is: <span th:text="${bcount}">0</span></p>
+   	 <p>The total number of Purchase is: <span th:text="${pcount}">0</span></p>
+   	 
+   </div>
+ 
+        <section class="hero">
+            <div class="container text-center text-white">
+                <h2 class="display-4" id="welcome">Welcome Admins to</h2>
+                <h2 class="display-4">HMS Laptop Sales Co.,Ltd</h2>
+                <p class="lead">At HMS, our mission is to provide our customers with top-of-the-line laptops and exceptional service, all from the comfort of their own homes.</p>
+		  	<table>
+		  	<div class="container1">
+		  		<div class="card">
+		  			<div class="imgbox">
+		  				<img src="/images/laptop.png" alt="menu"/>
+		  			</div>
+		  			<div class="content">
+			            <h4><b>Manage Your Laptops</b></h4>
+			            <p>Introduce new laptop models to your catalog. Ensure to add all relevant details for each model.</p>
+			            <button class="action-button"> <a href="#" th:href="@{/admin/laptops}">Manage Laptops</a></button>
+		       	    </div>
+		  		</div>
+		        
+		        <div class="card add-brand">
+		  			<div class="imgbox">
+		  				<img src="/images/brand.png" alt="menu"/>
+		  			</div>
+		            <div class="content">
+			            <h4><b>Manage Your Brands</b></h4>
+			            <p>Manage your product brands here. Add new brands to keep your relevant details inventory updated.</p>
+			            <button class="action-button"> <a th:href="@{/admin/brandlist}">Manage Brands</a></button>
+		            </div>
+		        </div>
+		        
+		        <div class="card purchase-list">
+		  			<div class="imgbox">
+		  				<img src="/images/purchase.jpg" alt="menu"/>
+		  			</div>
+		        	<div class="content">
+			            <h4><b>View Purchase History</b></h4>
+			            <p>View and manage the list of all purchases. Keep track of transactions and order statuses.</p>
+			            <button class="action-button"> <a href="#" th:href="@{/admin/historys}">Purchase History</a></button>
+		        	</div>
+		    	</div>
+		    	<div class="card purchase-list">
+		  			<div class="imgbox">
+		  				<img src="/images/purchase.jpg" alt="menu"/>
+		  			</div>
+		        	<div class="content">
+			            <h4><b>View User </b></h4>
+			            <p>View and manage the list of all purchases. Keep track of transactions and order statuses.</p>
+			            <button class="action-button"> <a href="#" th:href="@{/admin/users}">View User</a></button>
+		        	</div>
+		    	</div>
+            </div>
+            </table>
+        </section>
+    
+ 
+    Bootstrap JS
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ 
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome back, Admin</h1>
+    <p>Easily manage your data from this admin <mark>CMS</mark></p>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">Brands</h4>
+                    <p class="card-text">Manage the Brands section here.</p>
+                    <a href="#" th:href="@{/admin/brands}" class="card-link btn btn-primary">Manage</a>
+ 
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">Laptops</h4>
+                    <p class="card-text">Manage all the Laptops here.</p>
+                    <a href="#" th:href="@{/admin/laptops}" class="card-link btn btn-primary">Manage</a>
+ 
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">Purchase List</h4>
+                    <p class="card-text">Manage all the Purchase List here.</p>
+                    <a href="#" th:href="@{/admin/laptops}" class="card-link btn btn-primary">Manage</a>
+ 
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+</div>
+ 
+ 
+    
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
+ -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="
+		https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+		integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+    <style>
+    
+    /* test */
+ @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');   
+:root{
+	/*hue-saturation-lightness-alpha*/
+	--primary-color: hsl(330,87%,17%);
+	--secondary-color: hsla(203,100%,13%,1);
+}
+ 
+body{
+	font-family: 'Source Sans Pro', sans-serif;
+	width:100%;
+}
+ 
+/*Start Header*/
+ 
+header{
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	position: relative;
+}
+ 
+/*Start nav bar*/
+ 
+.navbar{
+	background: linear-gradient(rgba(0,0,0,0.6),var(--secondary-color));
+	padding: 10px 20px;
+	transition: all .7s;	
+}
+
+.navmenus{
+	background: linear-gradient(rgba(0,0,0,0.6),var(--secondary-color));
+	padding: 5px 30px;
+}
+ 
+.menuitems{
+	color: #eeee;
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+.menuitems:hover{
+	color: lightblue;
+}
+ 
+.menuitems .nav-tag{
+	overflow:hidden;
+}
+
+/*End nav bar*/
+
+/* Banner */
+
+.hero {
+    background-image: url('/laptopImages/llogo2.png');
+    background-size: cover;
+    background-position:center;
+    height: 100%;
+    width:100%;
+    display:flex;
+    align-items: center;
+    position: relative;
+}
+ 
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}
+ 
+.hero .card-container {
+    position: relative; /* Ensure text is above the overlay */
+    margin: auto;
+}
+ 
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+}
+
+.hero .btn-light {
+    font-weight: 600;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+ 
+.hero .btn-light:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-decoration:none;
+}
+ 
+h2{
+	text-align:center;
+	font-weight:bold;
+}
+#welcome{
+	margin-top:50px;
+}
+
+.dashboard{
+	display: flex;
+    justify-content: space-around;    
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.dashboard-icon{
+	gap: 20px;
+    padding: 20px;
+    width: 180px;
+    height:150px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+	position: relative;
+	overflow: hidden;
+    color: #fff;
+}
+
+.dashboard-icon i{
+	font-size: 40px;
+}
+
+.dashboard-icon p{
+	font-size: 20px;
+	margin:0;
+}
+
+.dashboard-icon .ani{
+	animation:myani 1.4s linear infinite;
+}
+
+@keyframes myani{
+			0%{
+				transform:scale(1);
+			}
+
+			25%{
+				transform:scale(1);
+			}
+
+			30%{
+				transform:scale(1.4);
+			}
+
+			50%{
+				transform:scale(1.2);
+			}
+
+			75%{
+				transform:scale(1.4);
+			}
+
+			100%{
+				transform:scale(1);
+			}
+		}
+
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    width: 1400px;
+    height:300px;    
+    gap: 20px;
+}
+ 
+.card{
+	
+	background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.card .imgbox{
+			width: 100%;
+			height: 100%;
+		}
+
+.imgbox img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: all 0.5s;
+		}
+
+.card .content{
+			width: 100px;
+			height: 10px;
+			background-color: red;
+			text-align: center;
+			position: absolute;
+			bottom: 0;
+			
+			transition: all 0.5s;
+		}
+
+	.card .content h4{
+			text-transform: uppercase;
+			margin-top: 10px;
+  		 	margin-bottom: 10px;
+  		 	font-size: 15px;
+    		color: green;			
+		}
+
+	.card .content p{
+			width: 80%;
+			font-size: 16px;
+			margin:10px auto;
+			color:black;
+			opacity: 0;
+			transition: all 0.5s;
+		}
+
+	.card .content .action-button{
+			text-decoration: none;
+			background: linear-gradient(135deg, #6e45e2, #88d3ce);
+			color: #fff;
+			border: none;
+			font-size: 16px;
+			padding:10px 20px;
+			border-radius: 10px;
+			/* display: inline-block; */
+			cursor: pointer;
+			margin-top: 10px;
+			display:flex;
+   		 	align-items: center;
+  		 	justify-content: center;  		  
+			opacity: 0;
+			transition: background 0.3s ease, transform 0.3s ease;
+			transition: all 0.5s;
+		}
+
+		.card:hover .content{
+			width:100%;
+			height: 100%;
+			left: 0;
+		}
+
+		.card:hover p,.card:hover  .action-button{
+			opacity: 1;
+			transition-delay: 0.5s;
+		}
+
+		.card:hover .imagbox img{
+			opacity: 0;
+		}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+    background: #88d3ce;
+    text-decoration: none;    
+	transform: scale(0.8);	
+}
+ 
+a{
+	color:white;
+}
+#navbar1{
+	align-items:right;
+}
+
+/* test */
+.card{
+	background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;	
+	position: relative;
+	overflow: hidden;
+		}
+
+	.card .content{
+			width: 80%;
+			height: 80px;
+			background-color: #fff;
+			text-align: center;
+			position: absolute;
+			bottom: 0;
+			left: 10%;
+			transition: all 0.5s;
+		}
+
+	.card .content h4{
+			text-transform: uppercase;
+			font-size: 20px;
+			margin-top: 20px;
+  		 	margin-bottom: 20px;
+    		color: #333;			
+		}
+
+	.card .content p{
+			width: 80%;
+			font-size: 16px;
+			margin:10px auto;
+			color:black;
+			opacity: 0;
+			transition: all 0.5s;
+		}
+
+	.card .content .action-button{
+			text-decoration: none;
+			background-color: #000;
+			color: #fff;
+			font-size: 14px;
+			padding:10px 15px;
+			display: inline-block;
+			margin-top: 10px;
+			opacity: 0;
+			transition: all 0.5s;
+		}
+
+		.card:hover .content{
+			width:100%;
+			height: 100%;
+			left: 0;
+		}
+
+		.card:hover p,.card:hover  .action-button{
+			opacity: 1;
+			transition-delay: 0.5s;
+		}
+
+		.card .imgbox{
+			width: 100%;
+			height: 100%;
+		}
+
+		.imgbox img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: all 0.5s;
+		}
+
+		.card:hover .imagbox img{
+			opacity: 0;
+		}
+
+.content h4 b {
+	text-decoration: none;
+}
+
+.action-button a:hover {
+	text-decoration: none;
+}
+
+.copyright{
+	width:100%;
+	height:50px;
+	margin:30px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+</style>
+</head>
+<body>
+	<!-- Start Header Section -->
+	<header>
+		<nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a href="homepage.html" class="navbar-brand text-light mx-3">
+                    <img src="laptopImages/favicon.png" alt="Y60 Laptop Sales Logo" width="50px">
+                    <span class="text-uppercase fw-bold h2 mx-1">HMS <span class="h3">LAPTOP SALES</span></span>
+                </a>
+             
+              	<div id="nav" class="navbar-collapse collapse justify-content-end text-uppercase fw-bold">
+					<ul class="navbar-nav">
+						<li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin" id="homeBtn">HOME</a></li>
+                        <li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin/laptops">INVENTORIES</a></li>
+                        <li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin/historys">PURCHASE HISTORY</a></li>
+                        <li class="nav-item" th:if="${session.email == null}">
+                            <a class="nav-link mx-2 menuitems" href="/login">LOG IN</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.email != null}">
+                            <a class="nav-link mx-2 menuitems" href="/logout">LOG OUT</a>
+                        </li>
+              
+					</ul>
+                </div>
+               
+             </div>
+        </nav>
+   </header>
+ 
+        <section class="hero">
+        
+            <div class="card-container text-center text-white">
+                <h2 class="display-4" id="welcome">Welcome Admins to</h2>
+                <h2 class="display-4">HMS Laptop Sales Co.,Ltd</h2>
+                <p class="lead">At HMS, our mission is to provide our customers with top-of-the-line laptops and exceptional service, all from the comfort of their own homes.</p>
+		<!--   	
+		  	 <p>The total number of Admins is: </p>
+   	 <p>The total number of users is: </p>
+   	  <p>The total number of Ban users is: </p>
+   	 <p>The total number of laptops is: </p>
+   	 <p>The total number of Brands is: </p>
+   	 <p>The total number of Purchase is: </p> -->
+		  <center>	
+		  	<div class="dashboard">
+		  		<div class="dashboard-icon">	
+		  				<i class="fa-solid fa-laptop"></i>
+		  				<p><span th:text="${lcount}">0</span>+</p>
+		  				<p>Laptops</p>
+		  		</div>
+		        
+		        <div class="dashboard-icon">		
+		  				<i class="material-icons">dvr</i>
+						<p><span th:text="${bcount}">0</span>+</p>
+						<p>Brands</p>
+		        </div>
+		        
+		        <div class="dashboard-icon">
+		  				<i class="material-icons">shop</i>
+		  				<p><span th:text="${pcount}">0</span>+</p>
+		  				<p>Purchases</p>
+		    	</div>
+		    	
+		    	<div class="dashboard-icon">
+		  				<i class="fa-solid fa-users-gear"></i>
+		  				<p><span th:text="${acount}">0</span>+</p>
+		  				<p>Admins</p>
+		    	</div>
+		    	
+		    	<div class="dashboard-icon">
+		  				<i class="fa-solid fa-users"></i>
+		  				<p><span th:text="${ucount}">0</span>+</p>
+		  				<p>Users</p>
+		    	</div>
+		  			  		
+		  		<div class="dashboard-icon">
+		  				<i class="fa-solid fa-users-slash"></i>
+		  				<p><span th:text="${bancount}">0</span>+</p>
+		  				<p>Banned Users</p>
+		    	</div>
+		  	</div>
+		  </center>	
+		  
+		  	<div class="container1">
+		  	
+		  		<div class="card add-laptop">
+		  			<div class="imgbox">
+		  				<img src="/images/laptop.png" alt="menu"/>
+		  			</div>
+		  			<div class="content">
+			            <h4><b>Manage Your Laptops</b></h4>
+			            <p>Manage your products here. Add new laptops to keep your relevant details inventory updated.</p>
+		  				<button class="action-button"> <a href="#" th:href="@{/admin/laptops}">Manage Laptops</a></button>
+		       	    </div>
+		  		</div>
+		        
+		        <div class="card add-brand">
+		  			<div class="imgbox">
+		  				<img src="/images/brand.png" alt="menu"/>
+		  			</div>
+		            <div class="content">
+			            <h4><b>Manage Your Brands</b></h4>
+			            <p>Manage your product brands here. Add new brands to keep your relevant details inventory updated.</p>
+			            <button class="action-button"> <a th:href="@{/admin/brandlist}">Manage Brands</a></button>
+		            </div>
+		        </div>
+		        
+		        <div class="card purchase-list">
+		  			<div class="imgbox">
+		  				<img src="/images/purchase.jpg" alt="menu"/>
+		  			</div>
+		        	<div class="content">
+			            <h4><b>View Purchase History</b></h4>
+			            <p>View and manage the list of all purchases. Keep track of transactions and order statuses.</p>
+			            <button class="action-button"> <a href="#" th:href="@{/admin/historys}">Purchase History</a></button>
+		        	</div>
+		    	</div>
+		    	<div class="card user-list">
+		  			<div class="imgbox">
+		  				<img src="/images/user.png" alt="menu"/>
+		  			</div>
+		        	<div class="content">
+			            <h4><b>Manage Users</b></h4>
+			            <p>View and manage the list of all purchases. Keep track of transactions and order statuses.</p>
+			            <button class="action-button"> <a th:href="@{/admin/users}">Manage Users </a></button>
+		        	</div>
+		    	</div>
+            </div>
+            
+            <div class="copyright">
+		  		<h6>Pay on Invoice | Terms & Conditions | Cookie Policy | Sitemap | Accessibility Statement </h6>
+       		    <small>&copy; Copyright 2024 HMS Laptop Sale, Y60 : 22390</small>
+		  	</div>
+		  	
+		  	</div>
+           
+        </section>
+
+ 
+     
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

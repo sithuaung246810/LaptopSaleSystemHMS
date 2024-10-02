@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Laptop List</title>
+   	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+/* General styles */
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+ 
+header {
+    background: linear-gradient(160deg, #88d3ce, #6e45e2);
+    color: #fff;
+    padding: 22px 0;
+    border-top-right-radius:10px;
+    margin-bottom:30px;
+}
+ 
+header .container1 {
+     display: flex;
+}
+ 
+header .pinfo {
+    margin: 0;
+    margin:auto;
+    text-align:center;
+    align-items: center;
+    justify-content: center;
+}
+header a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#home {
+	margin-top:3px;
+    font-size: 35px;
+    position:absolute;
+    right:3%;
+}
+#back {
+	margin-top:3px;
+    font-size: 32px;
+    position:absolute;
+    left:3%;
+    color:white;
+}
+#add{
+	margin-top:5px;
+	margin-right: 15px;
+    font-size: 30px;
+    position:absolute;
+    right:7%;
+}
+ 
+#delete{
+	 font-size: 20px;
+	 margin-left: 30px;
+}
+#update{
+	font-size: 20px;
+}
+#backward,#forward{
+	font-size: 15px;
+}
+
+/* Table styles */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+    background:#ccccff;
+    color: #fff;
+    margin-top:20px;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    transition: background 0.3s;
+    color:black;
+}
+
+th {
+    font-weight: bold;
+    font-size:18px;
+    padding:10px;
+    color:black;
+}
+
+/* Image styles */
+img {
+    max-width: 120px;
+    max-height: 80px;
+}
+
+/* Links in table */
+a {
+    color: #6e45e2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    .pagination-controls {
+        flex-direction: column;
+    }
+}
+
+ /* Pagination Container */
+.pagination-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination-info {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination-link {
+    color: #6e45e2;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    background:#ccccff;
+    transition: background 0.3s, color 0.3s;
+}
+
+.pagination-link:hover {
+    background: #6e45e2;
+    color: #fff;
+}
+
+.pagination-link.current {
+    background: #6e45e2;
+    color: #fff;
+}
+
+.pagination-link.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pagination-info {
+        font-size: 0.9rem;
+    }
+
+    .pagination-link {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+}
+.date-picker-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-size: 16px;
+    margin-bottom:8px;
+    color: #333;
+}
+
+.styled-date-picker {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    margin-bottom:18px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.styled-date-picker:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.date-picker {
+    margin-left: 75px;
+}
+
+.alert-info {
+	margin-left: 75px;
+	margin-top: 30px;
+	color: orange;
+}
+</style>
+</head>
+<body>
+	<header>
+        <div class="container1">
+			<div><a th:href="@{/admin/laptops}"><i class="fa-regular fa-circle-left" id="back"></i></a></div>
+        	<h1 class="pinfo">Customers' Purchase Histories</h1>
+            <a  th:href="@{/admin}"><i class="material-icons" id="home">home</i></a>
+		</div>	
+    </header>
+    
+    <section class="choice container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <form th:action="@{/admin/historys}" method="get">
+				    <label for="dateFilter" class="date-picker">Choose a date:</label>
+				    <input id="dateFilter" name="purchaseDate" type="date" class="styled-date-picker" 
+				           th:value="${selectedDate != null ? #dates.format(selectedDate, 'yyyy-MM-dd') : ''}" 
+				           onchange="this.form.submit()"/>
+				</form>
+
+            </div>
+        </div>
+    </section>
+    
+
+  <div th:if="${purchaseDetails.isEmpty()}" class="alert-info">
+    No data available for the selected date.
+</div>
+
+<!-- Display all purchase details if available -->
+<table th:if="${!purchaseDetails.isEmpty()}" class="table">
+        <thead class="table-header">
+            <tr>
+                <tr>
+                <th>ID</th>
+				<th>Purchase Date</th>
+                <th>User Id</th>
+                <th>User Name</th>
+                <th>Laptop Id</th>
+                <th>Model</th>
+                <th>Image</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>         	
+                
+            	</tr>
+        </thead>
+        <tbody>
+            <tr th:each="purchaseDetail : ${purchaseDetails}">
+            	<td th:text="${purchaseDetail.purchase.purchaseId}"></td> 
+            	<td th:text="${purchaseDetail.purchase.purchaseDate}"></td>
+            	<td th:text="${purchaseDetail.purchase.user.id}"></td>
+            	<td th:text="${purchaseDetail.purchase.user.name}"></td>
+            	<td th:text="${purchaseDetail.laptop.modelNo}"></td>
+            	<td th:text="${purchaseDetail.laptop.laptopName}"></td>
+             	<td><img th:src="@{'/laptopImages/' + ${purchaseDetail.laptop.imageName}}" alt="Laptop image"></td>
+             	<td th:text="${purchaseDetail.quantity}"></td>
+             	<td th:text="${'$' + purchaseDetail.laptop.price}"></td>
+             	<td th:text="${'$' + purchaseDetail.quantity * purchaseDetail.laptop.price}"></td>
+             	 
+            </tr>     
+        </tbody>
+   </table>	
+	
+        <div th:if="${totalPages > 1}" class="pagination-container">
+	  <!--   <div class="pagination-info">
+	        Total Rows: [[${totalItems}]]
+	    </div> -->
+	    <div class="pagination-controls">
+	    	
+	    	<span>
+	    		Total Rows: [[${totalItems}]] &nbsp; &nbsp; 
+	    	</span>
+	    		 
+	    	 <!-- Previous -->
+ 		 
+	        <span>
+	        	<a th:if="${currentPage > 1  }" th:href="@{'/page/' + ${currentPage - 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="pagination-link"><i class="fa-solid fa-backward-fast" id="backward"></i></a>
+	       		<span th:unless="${currentPage > 1}" class="pagination-link disabled"><i class="fa-solid fa-backward-fast" id="backward"></i></span> 
+	        </span>
+	        
+	        
+	    	
+	    	
+	    <!-- 	First & End of Pagination -->
+	    	<th:block th:if="${currentPage <=3 || currentPage > totalPages - 3}">
+	    		<span th:each="i: ${#numbers.sequence(1, 3)}">
+		            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="pagination-link">[[${i}]]</a>
+		            <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span>
+	        	</span>
+	     	
+	        	<span>
+	        		<a th:href="@{'/page/' + 4+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} " class="pagination-link">...</a>
+	        	</span> 
+	        	<!--  <span th:if="${totalPages > 4}">
+                	<a th:href="@{'/page/' + 4}" class="pagination-link">...</a>
+            	</span> -->
+	        	 
+	        	 <span th:each="i: ${#numbers.sequence(totalPages-2, totalPages)}">
+		            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="pagination-link">[[${i}]]</a>
+		            <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span>
+	        	</span>
+	        </th:block>
+	        
+	        
+	        <!-- 	Middle of Pagination -->
+	        <th:block th:if="${currentPage >3 && currentPage < totalPages - 2}">
+	    		<span>
+		            <a  th:href="@{'/page/' + ${currentPage - 3 }+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="pagination-link">...</a>
+	        	</span>
+	        	
+	        	 <span th:each="i: ${#numbers.sequence(currentPage - 2, currentPage + 2)}">
+		            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="pagination-link">[[${i}]]</a>
+		            <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span>
+	        	</span>
+	        	
+	        	<span>
+		            <a  th:href="@{'/page/' + ${currentPage + 3 } +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="pagination-link">...</a>
+	        	</span>
+	        </th:block>
+	    	
+	    	
+	    	<!-- FirstPage -->
+	    	<!-- 
+	    	<span>
+	    		<a th:if="${currentPage >1}" th:href="@{'/page/' + 1}" class="pagination-link">1</a>
+	        	<span th:unless="${currentPage != 1}" class="pagination-link current">1</span> 
+	        
+	    	</span> -->
+	         
+	    
+	    		
+	      <!--   <span th:each="i: ${#numbers.sequence(1, 2)}">
+	            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}" class="pagination-link">[[${i}]]</a>
+	            <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span>
+	        </span>
+	
+			<span th:each="i: ${#numbers.sequence(3, 3)}">
+				
+	            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}" class="pagination-link">...</a>
+	            <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span> 
+	        </span>
+	        
+	        
+	         <span th:each="i: ${#numbers.sequence(totalPages-1, totalPages)}">
+	            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}" class="pagination-link">[[${i}]]</a>
+	            <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span>
+	        </span> -->
+	        
+	        	
+	        <!-- lastPage -->   
+			<!--
+	        <span>
+	        	<a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}" class="pagination-link">[[${totalPages}]]</a>
+	       		<span th:unless="${currentPage < totalPages}" class="pagination-link current">[[${totalPages}]]</span> 
+	        </span>
+	         -->
+ 			
+ 		
+	        
+	        <!-- Next -->
+	    	<span >
+	    	
+	    		<a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="pagination-link"><i class="fa-solid fa-forward-fast" id="forward"></i></a>
+		    	<span th:unless="${currentPage < totalPages}" class="pagination-link disabled"><i class="fa-solid fa-forward-fast" id="forward"></i></span>
+	    	</span>
+	    	
+	    	<span>
+	    		&nbsp; &nbsp; Page [[${currentPage}]] of [[${totalPages}]] 
+	    	</span>
+	        
+	    </div>
+	</div>
+    
+    
+   
+</body>
+
+
+</html>

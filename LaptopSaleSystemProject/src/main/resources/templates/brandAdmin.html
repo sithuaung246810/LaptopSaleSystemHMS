@@ -1,0 +1,578 @@
+<!-- <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Admin Laptop Brand List</title>
+    <style>
+    	/* Reset some basic styles */
+body, h1, h2, p, table, form {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+}
+ 
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+ 
+header {
+    background: linear-gradient(160deg, #88d3ce, #6e45e2);
+    color: #fff;
+    padding: 22px 0;
+    border-top-right-radius:10px;
+    margin-bottom:50px;
+}
+ 
+header .container1 {
+     display: flex;
+}
+ 
+header .pinfo {
+    margin: 0;
+    margin:auto;
+    text-align:center;
+    align-items: center;
+    justify-content: center;
+}
+header a {
+    text-decoration: none;
+    color: inherit;
+}
+#home {
+	margin-top:3px;
+    font-size: 35px;
+    position:absolute;
+    right:3%;
+}
+ 
+ 
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+ 
+.brand-list, .add-brand {
+    flex: 1;
+    min-width: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+ 
+.brand-list {
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+ 
+.brand-list h2 {
+    font-size: 1.75em;
+    margin-bottom: 15px;
+    color:black;
+}
+ 
+table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: white;
+        }
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            padding: 10px;
+        }
+ 
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    text-decoration: none;
+}
+ 
+.edit-btn {
+    background:#00b8e6;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.edit-btn a {
+    color: #ffffff;
+    text-decoration: none;
+}
+ 
+.edit-btn:hover {
+    background:#0077b3;
+    text-decoration: none;
+}
+ 
+.delete-btn {
+    background: #ff471a;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.delete-btn a {
+    color: #ffffff;
+    text-decoration: none;
+}
+ 
+.delete-btn:hover {
+    background: #c82333;
+    text-decoration: none;
+}
+ 
+.add-brand {
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height:200px;
+}
+ 
+.add-brand h2 {
+    font-size: 1.75em;
+    margin-bottom: 15px;
+    color: black;
+}
+ 
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+ 
+form input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+ 
+form button {
+    background: linear-gradient(135deg, #6e45e2, #88d3ce);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 20%;
+    margin-left: 210px;
+}
+ 
+form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+    background: #88d3ce;
+}
+   
+#brand-name {
+	margin-top:10px;
+}
+
+material-icons {
+	margin-bottom: 10px;
+}
+
+</style>
+
+</head>
+<body>
+        <header>
+        <div class="container1">
+            <h1 class="pinfo">Laptop Brand Administration</h1>
+            <div><a th:href="@{/admin}"><i class="material-icons" id="home" >home</i></a></div>
+        </div>
+    </header>
+        <div class="container">
+        <main>
+            <section class="brand-list">
+                <h2>Brand List</h2>
+                
+                <div th:if="${success}" th:text="${success}" style="color : green;"></div>
+    			<div th:if="${error}" th:text="${error}" style="color : red;"></div>
+                <table>
+                
+<thead>
+    <tr>
+        <th>ID
+        <a th:href="@{'/admin/brandlist'}">
+                 
+                <i class="material-icons">
+                <span th:text="${'arrow_downward'}"></span>
+            </i>
+            </a> 
+            
+             <a th:href="@{'/admin/brandlist/reverse'}">
+                 <i class="material-icons">
+                 <span th:text="${'arrow_upward'}"></span>
+                </i>
+            </a>
+        
+        
+        </th>
+        
+        <th>
+            Brand Name
+         
+        </th>
+        <th>Actions</th>
+    </tr>
+</thead>
+
+
+                
+                   <tbody>
+                    
+                        <tr th:each="brand:${brands}">
+                            <td th:text="${brand.id}"></td>
+                           
+                            <td th:text="${brand.brandName}"></td>
+                        	  <td th:text="${brand.deleted}"></td>
+                            <td>
+                                <button class="edit-btn"><a th:href="@{/admin/brand/update/{id}(id=${brand.id})}">Edit</a></button>
+                                <button class="delete-btn"><a th:href="@{/admin/brand/delete/{id}(id=${brand.id})}">Delete</a></button>
+                            </td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+            </section>
+  
+            <section class="add-brand">
+                <h2>Add New Brand</h2>
+         
+                
+                <form th:action="@{/admin/brand/add}"  method="post" th:object="${brand}">
+                    <input type="hidden" name="id" th:field="*{id}">
+                     <label for="brand-name">Brand Name:</label>
+                    <input type="text" th:field="*{brandName}" id="brand-name" name="brand-name" placeholder="Enter brand name" required="required"/><br>
+                    <button type="submit" value="Add">Add</button>
+                </form>  
+                
+     
+        
+            
+            </section>
+        </main>
+    </div> 
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Admin Laptop Brand List</title>
+    <style>
+    	/* Reset some basic styles */
+body, h1, h2, p, table, form {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+}
+ 
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+ 
+header {
+    background: linear-gradient(160deg, #88d3ce, #6e45e2);
+    color: #fff;
+    padding: 22px 0;
+    border-top-right-radius:10px;
+    margin-bottom:50px;
+}
+ 
+header .container1 {
+     display: flex;
+}
+ 
+header .pinfo {
+    margin: 0;
+    margin:auto;
+    text-align:center;
+    align-items: center;
+    justify-content: center;
+}
+header a {
+    text-decoration: none;
+    color: inherit;
+}
+#home {
+	margin-top:3px;
+    font-size: 35px;
+    position:absolute;
+    right:3%;
+    color:white;
+}
+
+#back {
+	margin-top:3px;
+    font-size: 32px;
+    position:absolute;
+    left:3%;
+    color:white;
+}
+ 
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+ 
+.brand-list, .add-brand {
+    flex: 1;
+    min-width: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+ 
+.brand-list {
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+ 
+.brand-list h2 {
+    font-size: 1.75em;
+    margin-bottom: 15px;
+    color:black;
+}
+ 
+table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+		    border-radius: 12px;
+		    overflow: hidden;
+		    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background:#ccccff;
+		    color: #000;
+		    margin-top:20px;
+        }
+        tr:nth-child(even) {
+            background-color: white;
+            color: black;
+        }
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            padding: 10px;
+        }
+ 
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    text-decoration: none;
+}
+ 
+
+.add-brand {
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height:200px;
+}
+ 
+.add-brand h2 {
+    font-size: 1.75em;
+    margin-bottom: 15px;
+}
+
+tbody {
+	color: black;
+}
+ 
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+ 
+form input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+ 
+form button {
+    background: linear-gradient(135deg, #6e45e2, #88d3ce);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 20%;
+    margin-left: 210px;
+}
+ 
+form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+    background: #88d3ce;
+}
+   
+#brand-name {
+	margin-top:10px;
+}
+.material-icons{
+	 color:#6e45e2;
+}
+
+#delete1{
+	 font-size: 20px;
+	 margin-left: 20px;
+	 color:#E33535;	
+}
+
+#update1{
+	font-size: 20px;
+	color:#6e45e2;
+}
+
+</style>
+
+</head>
+<body>
+        <header>
+        <div class="container1">
+        	<div><a th:href="@{/admin/laptops}"><i class="fa-regular fa-circle-left" id="back"></i></a></div>
+            <h1 class="pinfo">Laptop Brand Administration</h1>
+            <div><a th:href="@{/admin}"><i class="material-icons" id="home" >home</i></a></div>
+        </div>
+    </header>
+        <div class="container">
+        <main>
+            <section class="brand-list">
+                <h2>Brand List</h2>
+                <div th:if="${success}" th:text="${success}" style="color : green;"></div>
+    			
+                <table>
+<thead>
+    <tr>
+        <th>ID
+        	<a th:href="@{'/admin/brand'}">
+                <i class="material-icons"><span th:text="${'arrow_downward'}"></span></i></a>
+
+             <a th:href="@{'/admin/brand/reverse'}">
+                 <i class="material-icons"><span th:text="${'arrow_upward'}"></span></i> </a>
+
+        </th>
+        
+        <th>
+            Brand Name
+         
+        </th>
+        <th>Actions</th>
+    </tr>
+</thead>
+                   <tbody>
+                    
+                        <tr th:each="brand:${brands}">
+                            <td th:text="${brand.id}"></td>
+                           
+                            <td th:text="${brand.brandName}"></td>
+                        
+                            <td id="icons">
+                                <a th:href="@{/admin/brand/update/{id}(id=${brand.id})}"><i class="fa-solid fa-pen-to-square" id="update1"></i></a>
+                                <a th:href="@{/admin/brand/delete/{id}(id=${brand.id})}"><i class="fa-regular fa-trash-can" id="delete1" onclick="return confirmDelete()"></i></a>
+                            </td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+            </section>
+  
+            <section class="add-brand">
+                <h2>Add New Brand</h2>
+         		<div th:if="${error}" th:text="${error}" style="color : red;"></div>
+                
+                <form th:action="@{/admin/brand/add}"  method="post" th:object="${brand}">
+                    <input type="hidden" name="id" th:field="*{id}">
+                     <label for="brand-name">Brand Name:</label>
+                    <input type="text" th:field="*{brandName}" id="brand-name" name="brand-name" placeholder="Enter brand name" required="required"/><br>
+                    <button type="submit" value="Add">Add</button>
+                </form>  
+                
+     
+        
+            
+            </section>
+        </main>
+    </div> 
+    <script>
+	function confirmDelete(){
+		return window.confirm("Are you sure you want to delete this?");
+		/* if (confirm){
+			window.alert("Item deleted successfully");
+		}else{
+			window.alert("Deletion Canceled");
+		} */
+	}
+</script>   
+</body>
+</html>
