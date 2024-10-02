@@ -852,6 +852,11 @@ a{
 	margin-bottom: 50px;
 }
 
+#countdown {
+            font-size: 25px;
+            color:white;
+        }
+        
 </style>
 </head>
 <body>
@@ -900,37 +905,43 @@ a{
 		  	<div class="dashboard">
 		  		<div class="dashboard-icon">	
 		  				<i class="fa-solid fa-laptop"></i>
-		  				<p><span th:text="${lcount}">0</span>+</p>
+		  				<p><span id="countdown">0</span>+</p>
+ 
 		  				<p>Laptops</p>
 		  		</div>
 		        
 		        <div class="dashboard-icon">		
 		  				<i class="material-icons">dvr</i>
-						<p><span th:text="${bcount}">0</span>+</p>
+		  				<p><span id="countdownB">0</span>+</p>
+						<!-- <p><span th:text="${bcount}">[[${bcount}]]</span>+</p> -->
 						<p>Brands</p>
 		        </div>
 		        
 		        <div class="dashboard-icon">
 		  				<i class="material-icons">shop</i>
-		  				<p><span th:text="${pcount}">0</span>+</p>
+		  				<p><span id="countdownP">0</span>+</p>
+		  				<!-- <p><span th:text="${pcount}">0</span>+</p> -->
 		  				<p>Purchases</p>
 		    	</div>
 		    	
 		    	<div class="dashboard-icon">
 		  				<i class="fa-solid fa-users-gear"></i>
-		  				<p><span th:text="${acount}">0</span>+</p>
+		  				<p><span id="countdownA">0</span>+</p>
+		  			<!-- 	<p><span th:text="${acount}">0</span>+</p> -->
 		  				<p>Admins</p>
 		    	</div>
 		    	
 		    	<div class="dashboard-icon">
 		  				<i class="fa-solid fa-users"></i>
-		  				<p><span th:text="${ucount}">0</span>+</p>
+		  					<p><span id="countdownU">0</span>+</p>
+		  				<!-- <p><span th:text="${ucount}">0</span>+</p> -->
 		  				<p>Users</p>
 		    	</div>
 		  			  		
 		  		<div class="dashboard-icon">
 		  				<i class="fa-solid fa-users-slash"></i>
-		  				<p><span th:text="${bancount}">0</span>+</p>
+		  					<p><span id="countdownBan">0</span>+</p>
+		  			<!-- 	<p><span th:text="${bancount}">0</span>+</p> -->
 		  				<p>Banned Users</p>
 		    	</div>
 		  	</div>
@@ -991,6 +1002,79 @@ a{
            
         </section>
 
+ <script>
+        let count = 0;
+        let count1 = 0;
+        let count2 = 0;
+        let count3 = 0;
+        let count4 = 0;
+        let count5 = 0;
+        // Replace this with the value dynamically from the server-side
+        const maxCountL =  [[${lcount}]];
+   
+ 
+        // Set an interval to simulate the countdown (or count-up in this case)
+        const interval = setInterval(() => {
+            if (count < maxCountL) {
+                count++;
+                document.getElementById('countdown').textContent = count;
+            } else {
+                clearInterval(interval); // Stop the interval once maxCount is reached
+            }
+        }, 60);
+        
+        const maxCountB =  [[${bcount}]];
+        // Set an interval to simulate the countdown (or count-up in this case)
+        const interval1 = setInterval(() => {
+            if (count1 < maxCountB) {
+                count1++;
+                document.getElementById('countdownB').textContent = count1;
+            } else {
+                clearInterval(interval1); // Stop the interval once maxCount is reached
+            }
+        }, 100);
+        
+        const maxCountP =  [[${pcount}]];
+        // Set an interval to simulate the countdown (or count-up in this case)
+        const interval2 = setInterval(() => {
+            if (count2 < maxCountP) {
+                count2++;
+                document.getElementById('countdownP').textContent = count2;
+            } else {
+                clearInterval(interval2); // Stop the interval once maxCount is reached
+            }
+        }, 100);
+        const maxCountU =  [[${ucount}]];
+        // Set an interval to simulate the countdown (or count-up in this case)
+        const interval3 = setInterval(() => {
+            if (count3 < maxCountP) {
+                count3++;
+                document.getElementById('countdownU').textContent = count3;
+            } else {
+                clearInterval(interval3); // Stop the interval once maxCount is reached
+            }
+        }, 100);
+        const maxCountA =  [[${acount}]];
+        // Set an interval to simulate the countdown (or count-up in this case)
+        const interval4 = setInterval(() => {
+            if (count4 < maxCountA) {
+                count4++;
+                document.getElementById('countdownA').textContent = count4;
+            } else {
+                clearInterval(interval4); // Stop the interval once maxCount is reached
+            }
+        }, 600);
+        const maxCountBan =  [[${bancount}]];
+        // Set an interval to simulate the countdown (or count-up in this case)
+        const interval5 = setInterval(() => {
+            if (count5 < maxCountBan) {
+                count5++;
+                document.getElementById('countdownBan').textContent = count5;
+            } else {
+                clearInterval(interval5); // Stop the interval once maxCount is reached
+            }
+        }, 600);
+        </script>
  
      
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

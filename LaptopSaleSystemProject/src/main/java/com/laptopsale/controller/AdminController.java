@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,7 +62,19 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	private boolean isAdmin(HttpSession session) {
 	    String userEmail = (String) session.getAttribute("email");
 	    User user = userService.findByEmail(userEmail);
-	    return user != null && user.getRole().equals("ROLE_ADMIN");
+	    
+	    
+	    if (user != null) {
+	        String role = user.getRole();
+	        session.setAttribute("adminRole", role);  // Set the adminRole in session
+	        return role.equals("ROLE_ADMIN") || role.equals("ROLE_OWNER");
+	    }
+	    
+	    return false;
+	    
+//	    session.setAttribute("adminRole", user.getRole());
+//	    System.out.println(user.getRole());;
+//	    return user != null && user.getRole().equals("ROLE_ADMIN") || user.getRole().equals("ROLE_OWNER");
 	}
 
 	
@@ -364,9 +377,19 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	
 	
 	///User
+//	@PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
 	 @GetMapping("/admin/users")
-	    public String getUsersByRole(@RequestParam(required = false, defaultValue = "ALL") String role, Model model) {
+	    public String getUsersByRole(@RequestParam(required = false, defaultValue = "ALL") String role, Model model,HttpSession session) {
+		
+		 if (!isAdmin(session)) {
+		        return "redirect:/login";
+		    }
+		 String adminRole = (String) session.getAttribute("adminRole");
+		 
 	        List<String> roles = userService.getDistinctRoles(); // Fetch distinct roles for dropdown
+	        
+	       
+	        
 	        List<User> users;
 
 	        if ("ALL".equals(role)) {
@@ -378,11 +401,13 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	        model.addAttribute("roles", roles);  // Add roles to the model
 	        model.addAttribute("selectedRole", role);  // Add selected role to the model
 	        model.addAttribute("users", users);  // Add filtered users to the model
-
+	        
+	        model.addAttribute("adminRole", adminRole);
+	        
 	        return "user";  // Return the Thymeleaf template name (user-list.html)
 	    }
 	 
-	
+//	@PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
 	@GetMapping("/admin/users/updateRole/{id}/{role}")
 	public String updateUserRole(
 	    @PathVariable("id") Integer id, 

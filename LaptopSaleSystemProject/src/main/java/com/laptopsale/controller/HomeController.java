@@ -227,7 +227,7 @@ public class HomeController {
 
     	User user = userService.findByEmail(email);
         Admin admin = adminService.findByEmail(email);
-        if (user != null && user.getRole().equals("ROLE_ADMIN")) {
+        if (user != null && user.getRole().equals("ROLE_ADMIN") || user.getRole().equals("ROLE_OWNER")) {
             session.setAttribute("email", email);
            
             return "redirect:/admin";
