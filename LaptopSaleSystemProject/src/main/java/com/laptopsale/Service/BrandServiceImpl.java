@@ -76,9 +76,19 @@ public class BrandServiceImpl implements BrandService {
 	    }
 
 	@Override
-	public List<Brand> findAllActiveBrands() {
+	public Page<Brand> findAllActiveBrands(Integer pageNo, Integer pageSize,String sortField,String sortDirection) {
 		// TODO Auto-generated method stub
-		return brandRepo.findAllActiveBrands();
+		/*
+		 * Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())?
+		 * Sort.by(sortField).ascending():Sort.by(sortField).descending();
+		 * 
+		 * Pageable pageable = PageRequest.of(pageNo -1 , pageSize);
+		 *///not show 0 page
+		
+		 Pageable pageable = PageRequest.of(pageNo - 1, pageSize, 
+				 sortDirection.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+		
+		return brandRepo.findByDeletedFalse(pageable);
 	}
 
 	@Override
@@ -100,6 +110,12 @@ public class BrandServiceImpl implements BrandService {
 		// TODO Auto-generated method stub
 		return brandRepo.countActiveBrand();
 	}
+
+	
+
+
+
+
 
 
 

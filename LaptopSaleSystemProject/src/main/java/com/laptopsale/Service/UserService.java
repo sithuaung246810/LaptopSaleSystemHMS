@@ -3,6 +3,10 @@ package com.laptopsale.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.laptopsale.Repository.UserRepository;
@@ -24,6 +28,9 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return userRepository.findAll();
 	}
+	
+
+	
 	public User findById(Integer id) {
 		// TODO Auto-generated method stub
 		return userRepository.findById(id);
@@ -48,4 +55,17 @@ public class UserService {
 	 public List<String> getDistinctRoles() {
 	        return userRepository.findDistinctRoles(); // Implement a custom query if needed
 	    }
+	 
+	 public Page<User> findAllUsersWithPagination(int page, int size, String sortField, String sortDir) {
+		    Pageable pageable = PageRequest.of(page - 1, size, 
+		                         sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+		    return userRepository.findAll(pageable);
+		}
+
+		public Page<User> findUsersByRoleWithPagination(String role, int page, int size, String sortField, String sortDir) {
+		    Pageable pageable = PageRequest.of(page - 1, size, 
+		                         sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+		    return userRepository.findByRole(role, pageable);
+		}
+
 }

@@ -3,6 +3,8 @@ package com.laptopsale.Repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,7 +15,9 @@ public interface BrandRepository extends JpaRepository<Brand, Integer>{
 	List<Brand> findAll(String keyword);
 	
 	@Query("SELECT br FROM Brand br WHERE br.deleted = false")
-	 List<Brand> findAllActiveBrands();
+	 Page<Brand> findAllActiveBrands( Pageable pageable);
+	
+	 Page<Brand> findByDeletedFalse(Pageable pageable);
 	
 	Brand findByBrandName(String brandName);
 	
@@ -24,4 +28,5 @@ public interface BrandRepository extends JpaRepository<Brand, Integer>{
 //	List<Brand> findAllByBrands(String brandName);
 
 //	 Brand findByName(String brandName);
+	
 }

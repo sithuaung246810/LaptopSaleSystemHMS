@@ -874,6 +874,7 @@ a{
 						<li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin" id="homeBtn">HOME</a></li>
                         <li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin/laptops">INVENTORIES</a></li>
                         <li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin/historys">PURCHASE HISTORY</a></li>
+                          <li class="nav-item"><a class="nav-link mx-2 menuitems" href="/admin/users">MANAGE USERS</a></li>
                         <li class="nav-item" th:if="${session.email == null}">
                             <a class="nav-link mx-2 menuitems" href="/login">LOG IN</a>
                         </li>
@@ -1047,7 +1048,7 @@ a{
         const maxCountU =  [[${ucount}]];
         // Set an interval to simulate the countdown (or count-up in this case)
         const interval3 = setInterval(() => {
-            if (count3 < maxCountP) {
+            if (count3 < maxCountU) {
                 count3++;
                 document.getElementById('countdownU').textContent = count3;
             } else {

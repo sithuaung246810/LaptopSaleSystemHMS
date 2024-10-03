@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -40,6 +41,7 @@ import com.laptopsale.entity.PurchaseDetail;
 import com.laptopsale.entity.User;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -72,9 +74,7 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	    
 	    return false;
 	    
-//	    session.setAttribute("adminRole", user.getRole());
-//	    System.out.println(user.getRole());;
-//	    return user != null && user.getRole().equals("ROLE_ADMIN") || user.getRole().equals("ROLE_OWNER");
+
 	}
 
 	
@@ -115,7 +115,7 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	        return "redirect:/login";
 	    }
 //		model.addAttribute("brands", brandService.getAllBrands(keyword).reversed());
-		model.addAttribute("brands", brandService.findAllActiveBrands());
+		model.addAttribute("brands", brandService.findAllActiveBrands(null, null, keyword, keyword));
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("brand", new Brand());
 		return "brandAdmin";
@@ -263,21 +263,8 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 		int pageSize = 4;
 		
 		Page<Laptop> page = laptopService.findPaginated(pageNo, pageSize,sortField,sortDir);
-		
-	
-		
-//		Pageable pageable = PageRequest.of(pageNo, pageSize);
-		
-//		Page<Laptop> laptopPage = laptopService.getPaginatedActiveLaptops(pageable);
-		
-//		List<Laptop> laptop= laptopService.findAllActiveLaptopList();
 
 		List<Laptop> listLaptoppage = page.getContent();
-		
-		
-		 
-		
-		
 		model.addAttribute("currentPage", pageNo);
 		
 		model.addAttribute("totalPages", page.getTotalPages());
@@ -337,17 +324,88 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	//Soft Delete
 	
 	@GetMapping("/admin/brandlist")
-	public String addTestBrands(Model model, @Param("keyword") String keyword, HttpSession session) {
+	public String addTestBrands(Model model, @Param("keyword") String keyword, HttpSession session, 
+	                            @RequestParam(defaultValue = "1") int page, 
+	                            @RequestParam(defaultValue = "5") int size,  
+	                            @RequestParam(value = "sortField", defaultValue = "id") String sortField,  
+	                            @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir) {
 	    if (!isAdmin(session)) {
 	        return "redirect:/login";
 	    }
-	    List<Brand> brands=  brandService.findAllActiveBrands().reversed();
-//	    model.addAttribute("brands", brandService.getAllBrands(keyword));
-	    model.addAttribute("brands", brands);
-	    model.addAttribute("keyword", keyword);
+
+	    Page<Brand> brandPage = brandService.findAllActiveBrands(page, size, sortField, sortDir);
+	    model.addAttribute("brands", brandPage.getContent());
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", brandPage.getTotalPages());
+	    model.addAttribute("totalItems", brandPage.getTotalElements());
+
+	    // Adding sorting information
+	    model.addAttribute("sortField", sortField);
+	    model.addAttribute("sortDir", sortDir);
+	    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
 	    model.addAttribute("brand", new Brand());
+
 	    return "brandAdmin";
 	}
+
+	
+//	@GetMapping("/admin/brandlist")
+//	public String addTestBrands(Model model, @Param("keyword") String keyword, HttpSession session, 
+//	                            @RequestParam(defaultValue = "1") int page, 
+//	                            @RequestParam(defaultValue = "5") int size,  
+//	                            @RequestParam(value = "sortField", defaultValue = "id") String sortField,  
+//	                            @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir) {
+//	    if (!isAdmin(session)) {
+//	        return "redirect:/login";
+//	    }
+//
+//	    Page<Brand> brandPage = brandService.findAllActiveBrands(page, size, sortField, sortDir);
+//	    model.addAttribute("brands", brandPage.getContent());
+//	    model.addAttribute("currentPage", page);
+//	    model.addAttribute("totalPages", brandPage.getTotalPages());
+//	    model.addAttribute("totalItems", brandPage.getTotalElements());
+//
+//	    // Adding sorting information
+//	    model.addAttribute("sortField", sortField);
+//	    model.addAttribute("sortDir", sortDir);
+//	    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+//
+//	    model.addAttribute("brand", new Brand());
+//
+//	    return "brandAdmin";
+//	}
+
+	
+//	@GetMapping("/admin/brandlist")
+//	public String addTestBrands(Model model, @Param("keyword") String keyword, HttpSession session, @RequestParam(defaultValue = "1") int page, 
+//            @RequestParam(defaultValue = "5") int size,  @RequestParam(value = "sortField", defaultValue = "id") String sortField,  @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir) {
+//	    if (!isAdmin(session)) {
+//	        return "redirect:/login";
+//	    }
+//		/*
+//		 * List<Brand> brands= brandService.findAllActiveBrands().reversed(); //
+//		 * model.addAttribute("brands", brandService.getAllBrands(keyword));
+//		 * model.addAttribute("brands", brands); model.addAttribute("keyword", keyword);
+//		 * model.addAttribute("brand", new Brand());
+//		 */
+//	    
+//	    Page<Brand> brandPage = brandService.findAllActiveBrands(page, size,sortField,sortDir);
+//        model.addAttribute("brands", brandPage.getContent());
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", brandPage.getTotalPages());
+//        
+//    	model.addAttribute("sortField", sortField);
+//		model.addAttribute("sortDir", sortDir);
+////		model.addAttribute("reverseSortDir", sortDir.equals("desc")? "asc":"desc");
+//        
+//        model.addAttribute("totalItems", brandPage.getTotalElements());
+//        
+//        model.addAttribute("brand", new Brand());
+//	    
+//	    return "brandAdmin";
+//	}
+	
 //	@GetMapping("/admin/test")
 //	public List<Brand> getAllActiveBrands(Model model,HttpSession session ){
 //		return brandService.findAllActiveBrands();
@@ -377,35 +435,81 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	
 	
 	///User
-//	@PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
-	 @GetMapping("/admin/users")
-	    public String getUsersByRole(@RequestParam(required = false, defaultValue = "ALL") String role, Model model,HttpSession session) {
-		
-		 if (!isAdmin(session)) {
-		        return "redirect:/login";
-		    }
-		 String adminRole = (String) session.getAttribute("adminRole");
-		 
-	        List<String> roles = userService.getDistinctRoles(); // Fetch distinct roles for dropdown
-	        
-	       
-	        
-	        List<User> users;
+	
+	@GetMapping("/admin/users")
+	public String getUsersByRole(@RequestParam(required = false, defaultValue = "ALL") String role, 
+	                             Model model, HttpSession session, 
+	                             @RequestParam(defaultValue = "1") int page, 
+	                             @RequestParam(defaultValue = "5") int size,  
+	                             @RequestParam(value = "sortField", defaultValue = "id") String sortField,  
+	                             @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir) {
 
-	        if ("ALL".equals(role)) {
-	            users = userService.findAllUser();  // Show all users if "ALL" is selected
-	        } else {
-	            users = userService.findUserByRole(role);  // Show users by selected role
-	        }
-
-	        model.addAttribute("roles", roles);  // Add roles to the model
-	        model.addAttribute("selectedRole", role);  // Add selected role to the model
-	        model.addAttribute("users", users);  // Add filtered users to the model
-	        
-	        model.addAttribute("adminRole", adminRole);
-	        
-	        return "user";  // Return the Thymeleaf template name (user-list.html)
+	    if (!isAdmin(session)) {
+	        return "redirect:/login";
 	    }
+	    
+	    String adminRole = (String) session.getAttribute("adminRole");
+	    List<String> roles = userService.getDistinctRoles(); // Fetch distinct roles for dropdown
+	    
+	    Page<User> userPage;
+
+	    if ("ALL".equals(role)) {
+	        userPage = userService.findAllUsersWithPagination(page, size, sortField, sortDir);
+	    } else {
+	        userPage = userService.findUsersByRoleWithPagination(role, page, size, sortField, sortDir);
+	    }
+
+	    // Add attributes to model
+	    model.addAttribute("roles", roles);  // Add roles to the model
+	    model.addAttribute("selectedRole", role);  // Add selected role to the model
+	    model.addAttribute("users", userPage.getContent());  // Add paginated users to the model
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", userPage.getTotalPages());
+	    model.addAttribute("totalItems", userPage.getTotalElements());
+	    
+	    // Sorting information
+	    model.addAttribute("sortField", sortField);
+	    model.addAttribute("sortDir", sortDir);
+	    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+	    
+	    model.addAttribute("adminRole", adminRole);
+	    
+	    return "user";
+	}
+
+	
+//	@PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
+//	 @GetMapping("/admin/users")
+//	    public String getUsersByRole(@RequestParam(required = false, defaultValue = "ALL") String role, Model model,HttpSession session ,@RequestParam(defaultValue = "1") int page, 
+//                @RequestParam(defaultValue = "5") int size,  
+//                @RequestParam(value = "sortField", defaultValue = "id") String sortField,  
+//                @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir) {
+//		
+//		 if (!isAdmin(session)) {
+//		        return "redirect:/login";
+//		    }
+//		 String adminRole = (String) session.getAttribute("adminRole");
+//		 
+//	        List<String> roles = userService.getDistinctRoles(); // Fetch distinct roles for dropdown
+//	        
+//	       
+//	        
+//	        List<User> users;
+//
+//	        if ("ALL".equals(role)) {
+//	            users = userService.findAllUser();  // Show all users if "ALL" is selected
+//	        } else {
+//	            users = userService.findUserByRole(role);  // Show users by selected role
+//	        }
+//
+//	        model.addAttribute("roles", roles);  // Add roles to the model
+//	        model.addAttribute("selectedRole", role);  // Add selected role to the model
+//	        model.addAttribute("users", users);  // Add filtered users to the model
+//	        
+//	        model.addAttribute("adminRole", adminRole);
+//	        
+//	        return "user";  // Return the Thymeleaf template name (user-list.html)
+//	    }
 	 
 //	@PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
 	@GetMapping("/admin/users/updateRole/{id}/{role}")
@@ -421,10 +525,12 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	        user.setRole("ROLE_" + role.toUpperCase());
 	        userService.saveUser(user);
 	    }
+	  
 
 	    // Redirect to the user list after updating the role
 	    return "redirect:/admin/users";
 	}
 
+	
 
 }

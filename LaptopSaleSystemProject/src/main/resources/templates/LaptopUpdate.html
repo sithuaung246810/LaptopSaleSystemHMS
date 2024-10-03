@@ -169,34 +169,33 @@ input[type="submit"]:hover{
     margin:auto;
 }
 
-.add-btn{
-	width:100px;
-    padding: 12px;
-   	background-color:#fff;
-    color: #6e45e2;
-    border:1px solid #6e45e2;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 400;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(110, 69, 226, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
- 
-.add-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+.add-btn {
     background: linear-gradient(160deg, #88d3ce, #6e45e2);
-    color:#fff;
-}
-
-.cancel {
-   	color: #F31D1D;
-   	width:100px;
-    border: 1px solid #F9445B;
+    color: #fff;
+    border:none;
     border-radius: 10px;
     font-size: 16px;
-    padding: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    width:100px;
+    justify-content: center;
+    flex: 1;
+    max-width: 120px;
+}
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+    background: #88d3ce;
+    color:#fff;
+}
+ 
+.cancel {
+    color: #6e45e2;
+    border: 1px solid #6e45e2;
+    border-radius: 10px;
+    font-size: 16px;
     cursor: pointer;
     background-color:#fff;
     transition: background 0.3s ease, transform 0.3s ease;
@@ -208,11 +207,11 @@ input[type="submit"]:hover{
 }
  
 .cancel:hover {
-    transform: translateY(-2px);
+	transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
-	background: #F9445B;
-	background: linear-gradient(135deg, #F9445B, #F9919B);
+	background: #88d3ce;
     color: #fff;
+    border: none;
 }
 
 /* Responsive adjustments */

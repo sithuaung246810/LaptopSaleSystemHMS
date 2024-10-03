@@ -18,8 +18,64 @@
 
 
    <style>
- 
+ .admin, .user, .ban {
+            color: #28a745;
+            cursor: pointer;
+            font-size:18px;
+            border:none;
+            background-color:white;
+        }
+
+		.admin:hover, .user:hover {
+			transform: translateY(-3px);
+		    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+		}
+
+        .user {
+            color: #ffc107;
+        }
         
+        .ban {
+            color: #dc3545;
+        }
+        
+        .ban:hover {
+        	transform: translateY(-2px);
+    		box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
+        }
+        
+.icons {
+    display: flex;
+    max-width:150px;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clicked {
+    background-color: white;
+    border-radius: 50%;
+    padding:10px;
+}
+
+.admin.clicked {
+    border: 2px solid green;
+}
+
+.user.clicked {
+    border: 2px solid yellow;
+}
+
+.ban.clicked {
+    border: 2px solid red;
+}
+
+
+   
     
         body {
             font-family: Arial, sans-serif;
@@ -235,7 +291,168 @@
             select {
                 width: 100%;
             }
+            
+            
+            
         }
+        
+        
+/* Pagination Container */
+.pagination-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination-info {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.pagination-link {
+    color: #6e45e2;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    background:#ccccff;
+    transition: background 0.3s, color 0.3s;
+}
+
+.pagination-link:hover {
+    background: #6e45e2;
+    color: #fff;
+}
+
+.pagination-link.current {
+    background: #6e45e2;
+    color: #fff;
+}
+
+.pagination-link.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+#search {
+	width: 200px;
+	height: 30px;
+	border-radius:10px;
+	margin-left: 12px;
+}
+
+#searchb {
+	width: 80px;
+	height: 40px;
+	border-radius:20px;
+	border-color: white;
+	color: white;
+	background: linear-gradient(160deg, #88d3ce, #6e45e2);
+}
+
+#back {
+	margin-top:3px;
+    font-size: 32px;
+    position:absolute;
+    left:3%;
+    color:white;
+}
+
+form {
+	margin-left: 88px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pagination-info {
+        font-size: 0.9rem;
+    }
+
+    .pagination-link {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsive adjustments for phones */
+/* Responsive adjustments for phones */
+@media (max-width: 480px) {
+    header {
+        padding: 15px 0; /* Adjust padding for the header */
+    }
+
+    .table-responsive {
+        width: 100%; /* Full width for the responsive table wrapper */
+        overflow-x: auto; /* Enable horizontal scrolling */
+    }
+
+    table {
+        width: 100%; /* Full width for the table */
+        font-size: 10px; /* Smaller font size for table */
+        border-collapse: collapse; /* Ensure borders collapse properly */
+        min-width: 600px; /* Set a minimum width to allow scrolling */
+    }
+
+    th, td {
+        padding: 5px; /* Reduced padding for better fit */
+        display: block; /* Stack cells vertically for small screens */
+        text-align: left; /* Align text to the left for better readability */
+    }
+
+    tr {
+        margin-bottom: 10px; /* Space between rows */
+        border: 1px solid #ddd; /* Ensure borders are visible */
+        border-radius: 8px; /* Add rounded corners */
+        background: #fff; /* Ensure the background is white for contrast */
+    }
+
+    th {
+        display: none; /* Hide headers on small screens */
+    }
+
+    td::before {
+        content: attr(data-label); /* Use data-label for responsive labels */
+        font-weight: bold; /* Make labels bold */
+        display: inline-block; /* Display as inline-block for proper formatting */
+        width: 50%; /* Label width */
+        text-transform: capitalize; /* Capitalize labels */
+        font-size: 12px; /* Adjust label font size */
+    }
+
+    img {
+        max-width: 80px; /* Adjusted image size for thumbnails */
+        max-height: 60px; /* Adjusted image height */
+    }
+
+    #home, #add {
+        font-size: 22px; /* Font size adjustments for icons */
+    }
+
+    .pagination-link {
+        padding: 4px 6px; /* Adjusted pagination link size */
+        font-size: 0.85rem; /* Adjusted pagination font size */
+    }
+
+    .pagination-info {
+        font-size: 0.85rem; /* Adjusted pagination info size */
+        text-align: center; /* Center aligned for better presentation */
+    }
+
+    td[data-label="action"] {
+        text-align: center; /* Center align action buttons */
+    }
+}
+        
     </style>
 </head>
 <body>
@@ -246,25 +463,42 @@
         	
             <div><a th:href="@{/admin}"><i class="material-icons" id="home">home</i></a></div>
            
-           
-            <a th:if="${adminRole == 'ROLE_OWNER'}" th:href="@{/admin/laptops/add}" ><i class="material-icons" id="add">add_circle_outline</i></a>
+        <!--    
+            <a th:if="${adminRole == 'ROLE_OWNER'}" th:href="@{/admin/users/add}" ><i class="material-icons" id="add">add_circle_outline</i></a> -->
         	
         </div>
     </header>
+<!-- <table>
+    <thead>
+        <tr>
+            <th><a th:href="@{'/admin/users?page=1&sortField=id&sortDir=' + ${reverseSortDir}}">ID</a></th>
+            <th><a th:href="@{'/admin/users?page=1&sortField=name&sortDir=' + ${reverseSortDir}}">Name</a></th>
+            Add other columns and sorting as needed
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            Other columns
+        </tr>
+    </tbody>
+</table> -->
+
+
 
     <center>
     
     
        <table>
             <tr class="table-header">
-                <th>Id</th>
-                <th>Name</th>
+                <th><a th:href="@{'/admin/users?page=1&sortField=id&sortDir=' + ${reverseSortDir}}">ID</a></th>
+            <th><a th:href="@{'/admin/users?page=1&sortField=name&sortDir=' + ${reverseSortDir}}">Name</a></th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Address</th>
-                <th>Role
-                	<form th:action="@{/admin/users}" method="get">
-			      
+                <th>
+                	<form th:action="@{/admin/users}" method="get">			      
 			        <select id="roleFilter" name="role" onchange="this.form.submit()">
 			            <option value="ALL" th:selected="${selectedRole == 'ALL'}">ALL ROLES</option>
 			            <option th:each="role : ${roles}" th:value="${role}" th:text="${#strings.replace(role, 'ROLE_', '')}" th:selected="${selectedRole == role}"></option>
@@ -281,157 +515,163 @@
                 <td th:text="${user.phone}"></td>
                 <td th:text="${user.address}"></td>
             <!--     <td th:text="${user.role}"></td> -->
-                <td th:text="${#strings.replace(user.role, 'ROLE_', '')}"></td>
+                <td th:text="${#strings.replace(user.role, 'ROLE_', '')}" th:if="${user.role== 'ROLE_ADMIN'}" style="color:#28a745;"></td>
+                <td th:text="${#strings.replace(user.role, 'ROLE_', '')}" th:if="${user.role== 'ROLE_USER'}" style="color:#ffc107;"></td>
+                <td th:text="${#strings.replace(user.role, 'ROLE_', '')+'NED USER'}" th:if="${user.role== 'ROLE_BAN'}" style="color:red;"></td>
+                <td th:text="${#strings.replace(user.role, 'ROLE_', '')}" th:if="${user.role== 'ROLE_OWNER'}" style="color:blue;"></td>
+             
+                
                 <td th:if="${adminRole == 'ROLE_ADMIN'}">
-                	
-                	
+             
+                <!-- 	<div class="icons" >
+                	<a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='ADMIN')}">
+                    <button class="icon admin"  th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_ADMIN'}"><i class="fas fa-user-cog"></i></button>
+                    </a>  -->
+                    
+                       <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='USER')}">
+	                    <button class="icon user" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_ADMIN'}"><i class="fas fa-user"></i></button>
+	                    </a>
 	                    
 	                    <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='BAN')}">
-	                        <button id="user" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_BAN' && user.role != 'ROLE_ADMIN'}"><i class="fas fa-user user-icon"></i></button>
+	                    <button class="icon ban" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_ADMIN'}"><i class="fas fa-user-slash"></i></button>
 	                    </a>
-	                  
-	                    <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='USER')}">
-	                        <button  id="ban" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_USER' && user.role != 'ROLE_ADMIN'}"><i class="fa-solid fa-user-slash"></i></button>
-	                    </a>
-                    
+	                    
+                    </div>
                 </td>
-                
-                 <!-- <td th:if="${adminRole == 'ROLE_OWNER'}">
-                	
-                		<a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='ADMIN')}">
-                        <button id="admin" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_BAN' && user.role != 'ROLE_USER'}"><i class="fas fa-user-cog"></i></button>
-	                    </a> 
-	            
+    
+	                <td th:if="${adminRole == 'ROLE_OWNER'}"> 
+	                	<div class="icons">
+	                	<a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='ADMIN')}">
+	                    <button class="icon admin" th:if="${user.role != 'ROLE_OWNER'}" ><i class="fas fa-user-cog"></i></button>
+	                    </a>
+	                    
 	                     <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='USER')}">
-	                        <button id="user" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_BAN' && user.role != 'ROLE_USER'}"><i class="fas fa-user user-icon"></i></button>
-	                    </a>
-	                  
-	                    <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='BAN')}">
-	                        <button  id="ban" th:if="${user.role != 'ROLE_OWNER'}"><i class="fa-solid fa-user-slash"></i></button>
+	                    <button class="icon user" th:if="${user.role != 'ROLE_OWNER'}"><i class="fas fa-user"></i></button>
 	                    </a>
 	                    
-	                    <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='USER')}">
-	                        <button id="user" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_USER' }"><i class="fas fa-user user-icon"></i></button>
-	                    </a>
-	                  
 	                    <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='BAN')}">
-	                        <button  id="ban" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_BAN'}"><i class="fa-solid fa-user-slash"></i></button>
-	                    </a> 
-                    
-                </td> -->
-                <td th:if="${adminRole == 'ROLE_OWNER'}">
-                	
-                		<a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='ADMIN')}">
-                        <button id="admin" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_BAN' && user.role != 'ROLE_USER'}"><i class="fas fa-user-cog" ></i></button>
-	                   </a> 
-	            
-	                     <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='USER')}">
-	                        <button id="user" th:if="${user.role != 'ROLE_OWNER'}" onclick="return comfirmUser()" class="clicked"><i class="fas fa-user user-icon"></i></button>
+	                    <button class="icon ban" th:if="${user.role != 'ROLE_OWNER'}"><i class="fas fa-user-slash"></i></button>
 	                    </a>
-	                  
-	                    <a th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='BAN')}">
-	                        <button  id="ban" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_ADMIN'}" onclick="return comfirmBan()" class="clicked"><i class="fa-solid fa-user-slash"></i></button>
-	                    </a> 
-	                    
-	                  
-                    
-                </td>
-                <!-- <td>
-                		<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                		
-                			
-						  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='ADMIN')}" >
-						  <label class="btn btn-outline-primary" for="btnradio1" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_BAN' && user.role != 'ROLE_USER'}"><i class="fas fa-user-cog" ></i></label>
-							
-							 
-							 
-						  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='USER')}" >
-						  <label class="btn btn-outline-primary" for="btnradio2" th:if="${user.role != 'ROLE_OWNER'}"><i class="fas fa-user user-icon"></i></label>
-							
-							  
-							
-						  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='BAN')}">
-						  <label class="btn btn-outline-primary" for="btnradio3" th:if="${user.role != 'ROLE_OWNER' && user.role != 'ROLE_ADMIN'}" ><i class="fa-solid fa-user-slash"></i></label>
-						
-						</div>
-                		
-					
-                </td> -->
-                
-                <td>
-                		
-                </td>
-                <td>
-                	<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-  
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"  th:href="@{/admin/users/updateRole/{id}/{role}(id=${user.id}, role='ADMIN')}">
-             lol
-    </button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-  </li>
- 
-</ul>
-<div class="tab-content" id="pills-tabContent">
-  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">...</div>
-  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">...</div>
-  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">...</div>
-  <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">...</div>
-</div>
-                	
-                </td>
-                
-              <!--   <td>
-                		<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-  <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
+	                    </div>
+	                </td>
+	           
 
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-  <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
-
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-  <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
-</div>
-                		
-                </td> -->
-                
             </tr>
         </table>  
      
+<!--         <nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a class="page-link" th:href="@{'/admin/users?page=' + (${currentPage - 1}) + '&size=' + ${size} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+        </li>
         
-    </center>
-    
-	<!-- <script type="text/javascript">
-	document.querySelectorAll('button').forEach(button => {
-	    button.addEventListener('click', function() {
-	        // Remove 'clicked' class from all buttons to reset others
-	        document.querySelectorAll('button').forEach(btn => btn.classList.remove('clicked'));
-	        
-	        // Add 'clicked' class to the clicked button
-	        this.classList.add('clicked');
-	    });
-	});
+        <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:href="@{'/admin/users?page=' + ${i} + '&size=' + ${size} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+               th:text="${i}"></a>
+        </li>
+         <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${currentPage != i}" th:href="@{'/admin/users?page=' + ${i} + '&size=5'}" class="pagination-link">[[${i}]]</a>
+                <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span>
+            </span>
+        
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a class="page-link" th:href="@{'/admin/users?page=' + (${currentPage + 1}) + '&size=' + ${size} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+        </li>
+    </ul>
+</nav> -->
+</center>
+<div th:if="${totalPages > 1}" class="pagination-container">
+    <div class="pagination-controls">
+        <span>Total Rows: [[${totalItems}]] &nbsp; &nbsp;</span>
+
+        <!-- Previous -->
+        <span>
+            <a th:if="${currentPage > 1}" th:href="@{'/admin/users?page=' + ${currentPage-1} + '&size=5'}" class="pagination-link">
+                <i class="fa-solid fa-backward-fast" id="backward"></i>
+            </a>
+            <span th:unless="${currentPage > 1}" class="pagination-link disabled">
+                <i class="fa-solid fa-backward-fast" id="backward"></i>
+            </span>
+        </span>
+
+            <span th:each="i : ${#numbers.sequence(1, totalPages-1)}">
+                <a th:if="${currentPage != i}" th:href="@{'/admin/users?page=' + ${i} + '&size=5'}" class="pagination-link">[[${i}]]</a>
+                <span th:unless="${currentPage != i}" class="pagination-link current">[[${i}]]</span>
+            </span>
+
+        <span>
+            <a th:if="${currentPage != totalPages}" th:href="@{'/admin/users?page=' + ${totalPages} + '&size=5'}" class="pagination-link">[[${totalPages}]]</a>
+            <span th:unless="${currentPage != totalPages}" class="pagination-link current">[[${totalPages}]]</span>
+        </span>
+
+        <!-- Next -->
+        <span>
+            <a th:if="${currentPage < totalPages}" th:href="@{'/admin/users?page=' + ${currentPage+1} + '&size=5'}" class="pagination-link">
+                <i class="fa-solid fa-forward-fast" id="forward"></i>
+            </a>
+            <span th:unless="${currentPage < totalPages}" class="pagination-link disabled">
+                <i class="fa-solid fa-forward-fast" id="forward"></i>
+            </span>
+        </span>
+
+        <span>&nbsp; &nbsp; Page [[${currentPage}]] of [[${totalPages}]]</span>
+    </div>
+</div>
 
 
-	</script> -->
-   
+  
+    <script type="text/javascript">
+    // Function to toggle "clicked" class and remove from others
+    function toggleClick(clickedButton, buttons) {
+        buttons.forEach(function(button) {
+            if (button !== clickedButton) {
+                button.classList.remove('clicked');
+            }
+        });
+        clickedButton.classList.toggle('clicked');
+        
+        // Save the clicked role to localStorage
+        const role = clickedButton.getAttribute('data-role');
+        localStorage.setItem('selectedRole', role);
+    }
+
+    // Add event listeners to all icon buttons
+    document.querySelectorAll('.icons').forEach(function(iconRow) {
+        const adminButton = iconRow.querySelector('.admin');
+        const userButton = iconRow.querySelector('.user');
+        const banButton = iconRow.querySelector('.ban');
+
+        const buttons = [adminButton, userButton, banButton];
+
+        // Add click events for each button
+        adminButton.addEventListener('click', function() {
+            toggleClick(adminButton, buttons);
+        });
+        userButton.addEventListener('click', function() {
+            toggleClick(userButton, buttons);
+        });
+        banButton.addEventListener('click', function() {
+            toggleClick(banButton, buttons);
+        });
+    });
+
+    // On page load, check localStorage and apply the "clicked" class
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const selectedRole = localStorage.getItem('selectedRole');
+        if (selectedRole) {
+            const buttonToClick = document.querySelector(`button[data-role="${selectedRole}"]`);
+            if (buttonToClick) {
+                // Find the parent row and apply the "clicked" class
+                const iconRow = buttonToClick.closest('.icons');
+                const buttons = iconRow.querySelectorAll('button');
+                toggleClick(buttonToClick, buttons);
+            }
+        }
+    });
     
-    
-    <!-- <script type="text/javascript">
-    	function comfirmUser(){
-    		return window.confirm("Are you sure you want to change to user?");
-    	}
-    	function comfirmBan(){
-    		return window.confirm("Are you sure you want to Ban to user?");
-    	}
-    </script> -->
+
+	
+</script>
 </body>
 </html>
