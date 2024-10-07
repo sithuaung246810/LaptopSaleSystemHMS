@@ -16,7 +16,11 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     
    <style>
  .admin, .user, .ban {
             color: #28a745;
@@ -89,12 +93,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+          
         }
 
         div span {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 15px;
             flex-grow: 1;
             text-align: center;
         }
@@ -106,6 +109,8 @@
 		    background: #fff;
 		    border-radius: 12px;
 		    overflow: hidden;
+		    margin-top:120px;
+		    margin-bottom:30px;
 		    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 		}
 		
@@ -121,14 +126,16 @@
 		    border-bottom: 1px solid #ddd;
 		    transition: background 0.3s;
 		    color:black;
+		    height: 60px;
 		}
 		
 		th {
 		    font-weight: bold;
 		    font-size:18px;
 		    text-align:left;
-		    padding:13px;
+		    padding:10px;
 		    color:black;
+		    height: 70px;
 		}
 
         #admin{
@@ -153,15 +160,6 @@
             border:none;
         }
         
-        
-        
-        
-		/* 	#user:hover {
-			transform: translateY(-3px);
-		    box-shadow: 0 8px 20px rgba(110, 69, 226, 0.5);
-		   
-		}*/
-	
         #ban {
              margin-right: 10px;
             color: #dc3545;
@@ -182,66 +180,11 @@
             color: inherit;
         }
 
-
-	header {
-	    background: linear-gradient(160deg, #88d3ce, #6e45e2);
-	    color: #fff;
-	    padding: 12px 0;
-	    border-top-right-radius: 10px;
-	    border-top-left-radius: 10px;
-	    margin-bottom: 50px;
-	}
-	
-	header .container1 {
-	    display: flex;
-	}
-	
-	header .pinfo {
-	    margin: 0;
-	    margin: auto;
-	    margin-top: 3px;
-	    text-align: center;
-	    align-items: center;
-	    justify-content: center;
-	}
-	
-	header a {
-	    text-decoration: none;
-	    color: inherit;
-	}
-	#home {
-	    margin-top: 3px;
-	    font-size: 35px;
-	    position: absolute;
-	    right: 3%;
-	    color: white;
-	}    
-	#add {
-	
-	    font-size: 35px;
-	    position: absolute;
-	    right: 6%;
-	    color: white;
-	  
-	}    
-	
-	#back {
-		margin-top:3px;
-	    font-size: 32px;
-	    position:absolute;
-	    left:3%;
-	    color:white;
-	}
 	button {
 		background-color: #fff;
 		border-radius: 10px;
 		padding: 5px 5px;
 	}
-	#mid {	
-		/* position: absolute;
-		align-items:center; */
-	    right: 18%;
-	}	
 	
 	  form {
          /*    background: #ffffff; */
@@ -303,10 +246,10 @@
     flex-direction: column;
     align-items: center;
     margin: 20px 0;
+    font-size: 10px;
 }
 
 .pagination-info {
-    font-size: 1rem;
     margin-bottom: 10px;
     color: #333;
 }
@@ -324,7 +267,6 @@
     text-decoration: none;
     padding: 8px 12px;
     border-radius: 6px;
-    font-weight: bold;
     background:#ccccff;
     transition: background 0.3s, color 0.3s;
 }
@@ -414,6 +356,7 @@ form {
         border: 1px solid #ddd; /* Ensure borders are visible */
         border-radius: 8px; /* Add rounded corners */
         background: #fff; /* Ensure the background is white for contrast */
+        
     }
 
     th {
@@ -424,7 +367,7 @@ form {
         content: attr(data-label); /* Use data-label for responsive labels */
         font-weight: bold; /* Make labels bold */
         display: inline-block; /* Display as inline-block for proper formatting */
-        width: 50%; /* Label width */
+        width: 50%;
         text-transform: capitalize; /* Capitalize labels */
         font-size: 12px; /* Adjust label font size */
     }
@@ -452,21 +395,38 @@ form {
         text-align: center; /* Center align action buttons */
     }
 }
-        
+#roleFilter {
+	width: 110px;
+	background-color: #f1fdfb;
+	font-size:12px;
+} 
+#closed {
+	width:200px;
+}
+tr td {
+	height: 60px;
+}
+th a:hover {
+	text-decoration: none;
+}
+
     </style>
 </head>
 <body>
     <header>
-        <div class="container1">
+       <!--  <div class="container1">
         	<div><a th:href="@{/admin}"><i class="fa-regular fa-circle-left" id="back"></i></a></div>
         	<h1 class="pinfo">User List</h1>
         	
             <div><a th:href="@{/admin}"><i class="material-icons" id="home">home</i></a></div>
            
-        <!--    
-            <a th:if="${adminRole == 'ROLE_OWNER'}" th:href="@{/admin/users/add}" ><i class="material-icons" id="add">add_circle_outline</i></a> -->
+           
+            <a th:if="${adminRole == 'ROLE_OWNER'}" th:href="@{/admin/users/add}" ><i class="material-icons" id="add">add_circle_outline</i></a>
         	
-        </div>
+        </div> -->
+        
+           <div th:replace="fragments/adminNavbar :: navbar"></div>
+        
     </header>
 <!-- <table>
     <thead>
@@ -486,31 +446,29 @@ form {
 </table> -->
 
 
-
-    <center>
-    
     
        <table>
             <tr class="table-header">
-                <th><a th:href="@{'/admin/users?page=1&sortField=id&sortDir=' + ${reverseSortDir}}">ID</a></th>
-            <th><a th:href="@{'/admin/users?page=1&sortField=name&sortDir=' + ${reverseSortDir}}">Name</a></th>
-                <th>Email</th>
+                <th id="closed1"><a th:href="@{'/admin/users?page=1&sortField=id&sortDir=' + ${reverseSortDir}}">ID</a></th>
+            	<th id="closed1" ><a th:href="@{'/admin/users?page=1&sortField=name&sortDir=' + ${reverseSortDir}}">Name</a></th>
+                <th id="closed" >Email</th>
                 <th>Phone</th>
                 <th>Address</th>
-                <th>
-                	<form th:action="@{/admin/users}" method="get">			      
+                <form id="one" th:action="@{/admin/users}" method="get">	
+                <th id="closed" >Role
+                			      
 			        <select id="roleFilter" name="role" onchange="this.form.submit()">
 			            <option value="ALL" th:selected="${selectedRole == 'ALL'}">ALL ROLES</option>
-			            <option th:each="role : ${roles}" th:value="${role}" th:text="${#strings.replace(role, 'ROLE_', '')}" th:selected="${selectedRole == role}"></option>
+			            <option id="one" th:each="role : ${roles}" th:value="${role}" th:text="${#strings.replace(role, 'ROLE_', '')}" th:selected="${selectedRole == role}"></option>
 			        </select>
-			    </form>
+			 
                 </th>
-                <th id="mid" th:if="${adminRole == 'ROLE_ADMIN'}">Admin</th>
-                <th id="mid" th:if="${adminRole == 'ROLE_OWNER'}">Owner</th>
+                </form>
+                <th th:if="${adminRole == 'ROLE_ADMIN'}"><span id="mid">Actions</span></th>
             </tr>
             <tr th:each="user :${users}">
                 <td th:text="${user.id}"></td>
-                <td th:text="${user.name}"></td>
+                <td th:text="${user.name}" ></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.phone}"></td>
                 <td th:text="${user.address}"></td>

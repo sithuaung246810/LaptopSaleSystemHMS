@@ -42,6 +42,8 @@ public class User {
 	    private String phone;
 	    
 	    public String role;
+	    
+	    public String profileName;
 	   
 
 		public String getName() {
@@ -98,6 +100,14 @@ public class User {
 
 		public void setRole(String role) {
 			this.role = role;
+		}
+
+		public String getProfileName() {
+			return profileName;
+		}
+
+		public void setProfileName(String profileName) {
+			this.profileName = profileName;
 		}
 
 	

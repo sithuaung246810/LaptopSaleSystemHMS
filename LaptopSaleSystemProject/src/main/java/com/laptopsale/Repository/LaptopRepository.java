@@ -50,5 +50,7 @@ public interface LaptopRepository extends JpaRepository<Laptop, Integer> {
 	    @Query("SELECT sum(l.stock) FROM Laptop l WHERE l.deleted = false")
 	    Integer sumActiveLaptops();
 	    
+	    Laptop findByLaptopName(String laptopName);
+	    
 
 }

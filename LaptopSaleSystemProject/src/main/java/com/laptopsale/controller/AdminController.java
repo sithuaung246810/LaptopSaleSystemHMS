@@ -122,25 +122,69 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	}
 	
 	@PostMapping("/admin/brand/add")
-	public String addBrandsTest(@ModelAttribute("brand") Brand brand, HttpSession session,RedirectAttributes redirectAttributes) {
-		if (!isAdmin(session)) {
-	        return "redirect:/login"; 
-	    }
-		 try {
-			 brand.setDeleted(false);
-			 brandService.addBrand(brand);
-			 redirectAttributes.addFlashAttribute("success", "Brand save successfully");
-		 }
-		 catch(IllegalArgumentException e) {
-			 redirectAttributes.addFlashAttribute("error", e.getMessage());
-		 }
-		 catch (Exception e) {
-			// TODO: handle exception
-			 redirectAttributes.addFlashAttribute("error", "An error occured while saving the brad. Please try again.");
-		}
-			
-		return"redirect:/admin/brandlist";
-	}
+    public String addBrandsTest(@ModelAttribute("brand") Brand brand, HttpSession session,RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/login"; 
+        }
+         try {
+             brand.setDeleted(false);
+             brandService.addBrand(brand);
+             redirectAttributes.addFlashAttribute("success", "Brand save successfully");
+         }
+         catch(IllegalArgumentException e) {
+             redirectAttributes.addFlashAttribute("error", e.getMessage());
+         }
+         catch (Exception e) {
+            // TODO: handle exception
+             redirectAttributes.addFlashAttribute("error", "An error occured while saving the brad. Please try again.");
+        }
+            
+        return"redirect:/admin/brandlist";
+    }
+    
+    // Here Repair Code and need update in Brand service and repository and html form action................
+    @PostMapping("/admin/brand/update")
+    public String updateBrands(@ModelAttribute("brand") Brand brand, HttpSession session,RedirectAttributes redirectAttributes) {
+        if (!isAdmin(session)) {
+            return "redirect:/login"; 
+        }
+         try {
+             brand.setDeleted(false);
+             brandService.updateBrand(brand);
+             redirectAttributes.addFlashAttribute("success", "Brand update successfully");
+         }
+         catch(IllegalArgumentException e) {
+             redirectAttributes.addFlashAttribute("error", e.getMessage());
+         }
+         catch (Exception e) {
+            // TODO: handle exception
+             redirectAttributes.addFlashAttribute("error", "An error occured while saving the brad. Please try again.");
+        }
+            
+        return"redirect:/admin/brandlist";
+    }
+	
+//	
+//	@PostMapping("/admin/brand/add")
+//	public String addBrandsTest(@ModelAttribute("brand") Brand brand, HttpSession session,RedirectAttributes redirectAttributes) {
+//		if (!isAdmin(session)) {
+//	        return "redirect:/login"; 
+//	    }
+//		 try {
+//			 brand.setDeleted(false);
+//			 brandService.addBrand(brand);
+//			 redirectAttributes.addFlashAttribute("success", "Brand save successfully");
+//		 }
+//		 catch(IllegalArgumentException e) {
+//			 redirectAttributes.addFlashAttribute("error", e.getMessage());
+//		 }
+//		 catch (Exception e) {
+//			// TODO: handle exception
+//			 redirectAttributes.addFlashAttribute("error", "An error occured while saving the brad. Please try again.");
+//		}
+//			
+//		return"redirect:/admin/brandlist";
+//	}
 	
 //	@GetMapping("/admin/test/delete/{id}")
 //	public String deleteBrandTest(@PathVariable("id") int id, HttpSession session) {
@@ -193,38 +237,127 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 	}
 	
 	@PostMapping("/admin/laptops/add")
-	public String laptopsAddPost(@ModelAttribute("laptopDto") LaptopDto laptopDto,
-								@RequestParam("laptopImage") MultipartFile file,
-								RedirectAttributes redirectAttributes,
-								@RequestParam("imgName")String imgName) throws IOException
+    public String laptopsAddPost(@ModelAttribute("laptopDto") LaptopDto laptopDto,
+                                @RequestParam("laptopImage") MultipartFile file,
+                                RedirectAttributes redirectAttributes,
+                                @RequestParam("imgName")String imgName) throws IOException
 {
-		Laptop laptop = new Laptop();
-		laptop.setId(laptopDto.getId());
-		laptop.setImageName(laptopDto.getImageName());
-		laptop.setBrand(brandService.getBrandById(laptopDto.getBrandId()).get());
-		laptop.setPrice(laptopDto.getPrice());
-//		laptop.setDescription(laptopDto.getDescription());
-		laptop.setLaptopName(laptopDto.getLaptopName());
-		laptop.setSpecification(laptopDto.getSpecification());
-		laptop.setModelNo(laptopDto.getModelNo());
-		laptop.setSerialNo(laptopDto.getSerialNo());
-		laptop.setStock(laptopDto.getStock());
-		laptop.setDeleted(false);
-		
-		  String imageUUID; 
-		  if(!file.isEmpty()) 
-		  { 
-		  imageUUID = file.getOriginalFilename();
-		  Path fileNameAndPath = Paths.get(uploadDir, imageUUID); 
-		  Files.write(fileNameAndPath, file.getBytes()); 
-		  }else { 
-			  imageUUID = imgName; 
-			  } 
-		  laptop.setImageName(imageUUID);
-		redirectAttributes.addFlashAttribute("success", "Laptop Added Successfully");
-		laptopService.addLaptop(laptop);
-		return "redirect:/admin/laptops";
-	}
+        Laptop laptop = new Laptop();
+        laptop.setId(laptopDto.getId());
+        laptop.setImageName(laptopDto.getImageName());
+        laptop.setBrand(brandService.getBrandById(laptopDto.getBrandId()).get());
+        laptop.setPrice(laptopDto.getPrice());
+//      laptop.setDescription(laptopDto.getDescription());
+        laptop.setLaptopName(laptopDto.getLaptopName());
+        laptop.setSpecification(laptopDto.getSpecification());
+        laptop.setModelNo(laptopDto.getModelNo());
+        laptop.setSerialNo(laptopDto.getSerialNo());
+        laptop.setStock(laptopDto.getStock());
+        
+        
+          String imageUUID; 
+          if(!file.isEmpty()) 
+          { 
+          imageUUID = file.getOriginalFilename();
+          Path fileNameAndPath = Paths.get(uploadDir, imageUUID); 
+          Files.write(fileNameAndPath, file.getBytes()); 
+          }else { 
+              imageUUID = imgName; 
+              } 
+          
+          try {
+              
+              laptop.setImageName(imageUUID);
+                laptop.setDeleted(false);
+                laptopService.addLaptop(laptop);
+                redirectAttributes.addFlashAttribute("success", "Laptop Added Successfully");
+             }
+             catch(IllegalArgumentException e) {
+                 redirectAttributes.addFlashAttribute("error", "Laptop Model Name is already exist. Please try again.");
+             }
+             catch (Exception e) {
+                // TODO: handle exception
+                 redirectAttributes.addFlashAttribute("error", "Laptop Model Name is already exist. Please try again.");
+            }
+                
+          
+//        laptop.setImageName(imageUUID);
+//      redirectAttributes.addFlashAttribute("success", "Laptop Added Successfully");
+//      laptopService.addLaptop(laptop);
+        return "redirect:/admin/laptops";
+    }
+    
+    // Here Repair Code and need update in laptop service and repository and html form action................
+    @PostMapping("/admin/laptops/update")
+    public String laptopUpdatePost(@ModelAttribute("laptopDto") LaptopDto laptopDto,
+                                @RequestParam("laptopImage") MultipartFile file,
+                                RedirectAttributes redirectAttributes,
+                                @RequestParam("imgName")String imgName) throws IOException
+{
+        Laptop laptop = new Laptop();
+        laptop.setId(laptopDto.getId());
+        laptop.setImageName(laptopDto.getImageName());
+        laptop.setBrand(brandService.getBrandById(laptopDto.getBrandId()).get());
+        laptop.setPrice(laptopDto.getPrice());
+//      laptop.setDescription(laptopDto.getDescription());
+        laptop.setLaptopName(laptopDto.getLaptopName());
+        laptop.setSpecification(laptopDto.getSpecification());
+        laptop.setModelNo(laptopDto.getModelNo());
+        laptop.setSerialNo(laptopDto.getSerialNo());
+        laptop.setStock(laptopDto.getStock());
+        
+        
+          String imageUUID; 
+          if(!file.isEmpty()) 
+          { 
+          imageUUID = file.getOriginalFilename();
+          Path fileNameAndPath = Paths.get(uploadDir, imageUUID); 
+          Files.write(fileNameAndPath, file.getBytes()); 
+          }else { 
+              imageUUID = imgName; 
+              } 
+          
+    
+          
+          laptop.setImageName(imageUUID);
+        redirectAttributes.addFlashAttribute("success", "Laptop Update Successfully");
+        laptopService.updateLaptop(laptop);
+        return "redirect:/admin/laptops";
+    }
+	
+//	@PostMapping("/admin/laptops/add")
+//	public String laptopsAddPost(@ModelAttribute("laptopDto") LaptopDto laptopDto,
+//								@RequestParam("laptopImage") MultipartFile file,
+//								RedirectAttributes redirectAttributes,
+//								@RequestParam("imgName")String imgName) throws IOException
+//{
+//		Laptop laptop = new Laptop();
+//		laptop.setId(laptopDto.getId());
+//		laptop.setImageName(laptopDto.getImageName());
+//		laptop.setBrand(brandService.getBrandById(laptopDto.getBrandId()).get());
+//		laptop.setPrice(laptopDto.getPrice());
+////		laptop.setDescription(laptopDto.getDescription());
+//		laptop.setLaptopName(laptopDto.getLaptopName());
+//		laptop.setSpecification(laptopDto.getSpecification());
+//		laptop.setModelNo(laptopDto.getModelNo());
+//		laptop.setSerialNo(laptopDto.getSerialNo());
+//		laptop.setStock(laptopDto.getStock());
+//		laptop.setDeleted(false);
+//		
+//		  String imageUUID; 
+//		  if(!file.isEmpty()) 
+//		  { 
+//		  imageUUID = file.getOriginalFilename();
+//		  Path fileNameAndPath = Paths.get(uploadDir, imageUUID); 
+//		  Files.write(fileNameAndPath, file.getBytes()); 
+//		  }else { 
+//			  imageUUID = imgName; 
+//			  } 
+//		  laptop.setImageName(imageUUID);
+//		redirectAttributes.addFlashAttribute("success", "Laptop Added Successfully");
+//		laptopService.addLaptop(laptop);
+//		return "redirect:/admin/laptops";
+//	}
 	
 
 	
@@ -295,31 +428,119 @@ public static String uploadDir = System.getProperty("user.dir")+"/public/laptopI
 		return "AdminTest";
 	}
 	
-	
 	@GetMapping("/admin/historys")
-    public String showHistorys(
-            @RequestParam(value = "purchaseDate", required = false) 
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date purchaseDate,
-            Model model, HttpSession session) {
-		
-		if (!isAdmin(session)) {
+	public String showHistorys(
+	        @RequestParam(value = "purchaseDate", required = false) 
+	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date purchaseDate,
+	        @RequestParam(value = "page", defaultValue = "0") int page,  // Page number (0-based index)
+	        @RequestParam(value = "size", defaultValue = "5") int size, // Page size
+	        Model model, 
+	        HttpSession session) {
+
+	    // Check if the user is an admin; if not, redirect to the login page
+	    if (!isAdmin(session)) {
 	        return "redirect:/login";
 	    }
 
-        List<PurchaseDetail> purchaseDetails;
+	    // Fetch PurchaseDetails based on the selected purchase date and pagination
+	    if (purchaseDate == null) {
+	        // No date selected, apply pagination
+	        Pageable pageable = PageRequest.of(page, size);
+	        Page<PurchaseDetail> purchaseDetails = purchaseDetailRepository.findAll(pageable);
+	        
+	        model.addAttribute("currentPage", page);
+	        model.addAttribute("totalPages", purchaseDetails.getTotalPages());
+	        model.addAttribute("totalItems", purchaseDetails.getTotalElements());
+	        model.addAttribute("purchaseDetails", purchaseDetails.getContent());
 
-        // If no date is selected, fetch all PurchaseDetails
-        if (purchaseDate == null) {
-            purchaseDetails = purchaseDetailRepository.findAll();
-        } else {
-            // Fetch PurchaseDetails for the selected date
-            purchaseDetails = purchaseDetailRepository.findByPurchaseDate(purchaseDate);
-            model.addAttribute("selectedDate", purchaseDate);
-        }
+	    } else {
+	        // Date selected, fetch all records for the specific date (without pagination)
+	        List<PurchaseDetail> purchaseDetails = purchaseDetailRepository.findByPurchaseDate(purchaseDate);
+	        
+	        // Add the date and details to the model
+	        model.addAttribute("selectedDate", purchaseDate);
+	        model.addAttribute("purchaseDetails", purchaseDetails);
+	        
+	        // Since no pagination for date filter, set total pages and current page to 1
+	        model.addAttribute("totalPages", 1);
+	        model.addAttribute("currentPage", 0);
+	    }
 
-        model.addAttribute("purchaseDetails", purchaseDetails);
-        return "PurchaseHistory";
-    }
+	    return "PurchaseHistory";
+	}
+	
+//	@GetMapping("/admin/historys")
+//	public String showHistorys(
+//	        @RequestParam(value = "purchaseDate", required = false) 
+//	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date purchaseDate,
+//	        @RequestParam(value = "page", defaultValue = "1") int page,  // Page number (0-based index)
+//	        @RequestParam(value = "size", defaultValue = "5") int size, // Page size
+//	        Model model, 
+//	        HttpSession session) {
+//
+//	    // Check if the user is an admin; if not, redirect to the login page
+//	    if (!isAdmin(session)) {
+//	        return "redirect:/login";
+//	    }
+//
+//	    Page<PurchaseDetail> purchaseDetails;
+//
+//	    Pageable pageable = PageRequest.of(page, size);
+//	 
+//
+//	    // Fetch PurchaseDetails based on the selected purchase date and pagination
+//	    if (purchaseDate == null) {
+//	        // No date selected, fetch all PurchaseDetails with pagination
+//	    	
+//	        purchaseDetails = purchaseDetailRepository.findAll(pageable);
+//	        
+//	        
+//	        model.addAttribute("currentPage", page);
+//			model.addAttribute("totalPages", purchaseDetails.getTotalPages());
+//			model.addAttribute("totalItems", purchaseDetails.getTotalElements());
+//			
+//			
+//			
+//			model.addAttribute("listLaptops", purchaseDetails.getContent());
+//	    } else {
+//	        // Fetch PurchaseDetails for the selected date with pagination
+//	        purchaseDetails = purchaseDetailRepository.findByPurchaseDate(purchaseDate, pageable);
+//	        model.addAttribute("selectedDate", purchaseDate);
+//	    }
+//
+//	    // Add pagination information to the model
+//	    model.addAttribute("purchaseDetails", purchaseDetails.getContent());
+//	    model.addAttribute("totalPages", purchaseDetails.getTotalPages());
+//	    model.addAttribute("currentPage", page);
+//
+//	    return "PurchaseHistory";
+//	}
+	
+	
+//	@GetMapping("/admin/historys")
+//    public String showHistorys(
+//            @RequestParam(value = "purchaseDate", required = false) 
+//            @DateTimeFormat(pattern = "yyyy-MM-dd") Date purchaseDate,
+//            Model model, HttpSession session) {
+//		
+//		if (!isAdmin(session)) {
+//	        return "redirect:/login";
+//	    }
+//
+//        List<PurchaseDetail> purchaseDetails;
+//
+//        // If no date is selected, fetch all PurchaseDetails
+//        if (purchaseDate == null) {
+//            purchaseDetails = purchaseDetailRepository.findAll();
+//        } else {
+//            // Fetch PurchaseDetails for the selected date
+//            purchaseDetails = purchaseDetailRepository.findByPurchaseDate(purchaseDate);
+//            model.addAttribute("selectedDate", purchaseDate);
+//        }
+//
+//        model.addAttribute("purchaseDetails", purchaseDetails);
+//        return "PurchaseHistory";
+//    }
 	
 	//Soft Delete
 	

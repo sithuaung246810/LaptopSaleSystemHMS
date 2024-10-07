@@ -31,6 +31,12 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	@Override
+	public void updateBrand(Brand brand) {
+		// TODO Auto-generated method stub
+		brandRepo.save(brand);
+	}
+	
+	@Override
 	public List<Brand> getAllBrands(String keyword) {
 		// TODO Auto-generated method stub
 		if(keyword != null) {
@@ -110,6 +116,8 @@ public class BrandServiceImpl implements BrandService {
 		// TODO Auto-generated method stub
 		return brandRepo.countActiveBrand();
 	}
+
+
 
 	
 

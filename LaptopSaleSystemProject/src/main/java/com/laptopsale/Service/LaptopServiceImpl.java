@@ -35,14 +35,30 @@ public class LaptopServiceImpl  implements LaptopService{
 	PurchaseDetailRepository purchaseDetailRepository;
 	
 	
+	 @Override
+		public void addLaptop(Laptop laptop) {
+			if(laptopRepo.findByLaptopName(laptop.getLaptopName()) !=null) {
+				throw new IllegalArgumentException(" Model Name is already exist");
+			}
+			laptopRepo.save(laptop);
+			
+			
+		}
+		
+		@Override
+		public void updateLaptop(Laptop laptop) {
+			// TODO Auto-generated method stub
+			
+			laptopRepo.save(laptop);
+		}
 	
 	
 	//Admin......
-	@Override
-	public void addLaptop(Laptop laptop) {
-		laptopRepo.save(laptop);
-		
-	}
+//	@Override
+//	public void addLaptop(Laptop laptop) {
+//		laptopRepo.save(laptop);
+//		
+//	}
 
 	@Override
 	public List<Laptop> getAllLaptops(String keyword) {

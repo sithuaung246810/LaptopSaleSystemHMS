@@ -1,5 +1,9 @@
 package com.laptopsale.controller;
  
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,13 +19,13 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.laptopsale.Repository.BrandRepository;
 import com.laptopsale.Repository.TokenRepository;
@@ -45,10 +49,12 @@ import com.laptopsale.entity.PurchaseDetail;
 import com.laptopsale.entity.User;
  
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
  
 @Controller
 public class HomeController {
+	
+	public static String uploadDir = System.getProperty("user.dir")+"/public/laptopImages";
+	
 	@Autowired
 	private PurchaseDetailService purchaseDetailService;
     @Autowired
@@ -72,7 +78,12 @@ public class HomeController {
     
     @Autowired
     private UserRepository userRepository;
-   
+    
+    @GetMapping("/nav")
+    public String nav() {
+    	return "navbar";
+    }
+    
     @GetMapping("/home")
     public String home(Model model) {
         List<Laptop> laptops = laptopService.getFeaturedLaptops();
@@ -101,7 +112,7 @@ public class HomeController {
     public String profile(OAuth2AuthenticationToken token, Model model, HttpSession session) {
         String email = token.getPrincipal().getAttribute("email");
         String name = token.getPrincipal().getAttribute("name");
-//        String address = token.getPrincipal().getAttribute("address");
+        String address = token.getPrincipal().getAttribute("address") !=null? token.getPrincipal().getAttribute("address"):"none";
         String picture = token.getPrincipal().getAttribute("avatar_url");
         System.out.println("Token: " + token);
         // Check if the user exists in the database
@@ -111,9 +122,10 @@ public class HomeController {
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setName(name);
-            newUser.setAddress("ygn");
-            newUser.setPhone("09-777-777777");
-            newUser.setPassword("@Ung12345"); // or generate a random password or hash
+            newUser.setAddress(address);
+            newUser.setPhone("none");
+            newUser.setPassword("123"); // or generate a random password or hash
+            newUser.setProfileName(picture);
             newUser.setRole("ROLE_USER");
             userService.saveUser(newUser); // Save user to the database
         }
@@ -180,8 +192,9 @@ public class HomeController {
 //    }
  
     @GetMapping("/laptop/{id}")
-    public String getLaptopDetails(@PathVariable("id") int id, Model model) {
+    public String getLaptopDetails(@PathVariable("id") int id, Model model, HttpSession session) {
         Laptop laptop = laptopService.getLaptopById(id);
+        session.setAttribute("intendedDestination", "/laptop/" + id);
         if (laptop != null) {
  
             model.addAttribute("laptop", laptop);
@@ -193,12 +206,12 @@ public class HomeController {
     }
  
     @GetMapping("/laptop")
-    public String getAllLaptops(@RequestParam(defaultValue = "ALL") String brand, Model model) {
+    public String getAllLaptops(@RequestParam(defaultValue = "ALL") String brand, Model model,HttpSession session) {
         
         
         List<Laptop> laptops = laptopService.getLaptopsByBrand(brand);
         List<Brand> brands = brandRepository.findAll();
- 
+        session.setAttribute("intendedDestination", "/laptop");
         model.addAttribute("laptops", laptops);
         model.addAttribute("selectedBrand", brand);
         model.addAttribute("brands", brands);
@@ -209,6 +222,7 @@ public class HomeController {
     public String loginPage(Model model) {
         model.addAttribute("showRegisterLink", true);
         model.addAttribute("user", new User());
+        
         return "login";
     }
   
@@ -224,12 +238,24 @@ public class HomeController {
 //             @ModelAttribute UserLoginDTO userLoginDTO,OAuth2AuthenticationToken token,
             HttpSession session) {
     	
-
+//    	userDetailsService.loadUserByUsername(userLoginDTO.getUsername());
+//    	String name = token.getPrincipal().getAttribute("name");
+//    	String email1 = token.getPrincipal().getAttribute("email");
+//    	
+//    	
+//    	UserDTO userDto = new UserDTO();
+//    	userDto.setEmail(email1);
+//    	userDto.setPassword(password);
+//    	
+//    	
+//    	userDetailsService.save(userDto);
+    	
+//    	User user =userService.saveUser(user);
     	User user = userService.findByEmail(email);
         Admin admin = adminService.findByEmail(email);
-        if (user != null && user.getRole().equals("ROLE_ADMIN") || user.getRole().equals("ROLE_OWNER")) {
+        if (user != null && user.getRole().equals("ROLE_ADMIN")) {
             session.setAttribute("email", email);
-           
+            session.setAttribute("name", user.getName());
             return "redirect:/admin";
         }
  
@@ -240,7 +266,8 @@ public class HomeController {
             session.setAttribute("userType", "user");
             
 //            return "redirect:/home";
-            
+            session.setAttribute("name", user.getName());
+            session.setAttribute("profile", user.getProfileName());
             String intendedDestination = (String) session.getAttribute("intendedDestination");
             if (intendedDestination != null) {
                 session.removeAttribute("intendedDestination");
@@ -253,6 +280,7 @@ public class HomeController {
                 return "redirect:/home";
             }
         }
+        
         model.addAttribute("error", "Invalid email or password");
         return "redirect:/login";  
         
@@ -269,16 +297,22 @@ public class HomeController {
     @PostMapping("/register")
     public String registerUser(@RequestParam(value = "laptopId", required = false) Long laptopId,
             @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity,
-//            @ModelAttribute("user") User user,
-            @Valid User user, BindingResult result, 
+            @ModelAttribute("user") User user,
+            @RequestParam("profileImage") MultipartFile file,
             Model model,
             //@ModelAttribute UserDTO userDTO,OAuth2AuthenticationToken token,//repaired
-            HttpSession session) {
-
+            HttpSession session) throws IOException {
+ 
+//     	String name = token.getPrincipal().getAttribute("name"); //repaired
+//    	String email = token.getPrincipal().getAttribute("email");
+//    	 user = new User();
+//    	user.setEmail(email);
+//    	user.setPassword(name);
     	
-	    	if (result.hasErrors()) {
-	            return  "register";  // Return the registration page with validation errors
-	        }
+   
+    	
+    	
+//    	userService.saveUser(user); //end
      	
             if (userService.findByEmail(user.getEmail()) != null) {
             model.addAttribute("error", "An account with this email already exists.");
@@ -287,12 +321,21 @@ public class HomeController {
             return "register";
             }
             
+	            String imageUUID = null; 
+	  		  if(!file.isEmpty()) 
+	  		  { 
+	  		  imageUUID = file.getOriginalFilename();
+	  		  Path fileNameAndPath = Paths.get(uploadDir, imageUUID); 
+	  		  Files.write(fileNameAndPath, file.getBytes()); 
+	  		  }
+	  		  user.setProfileName(imageUUID);
             
             user.setRole("ROLE_USER");
             userService.saveUser(user);
             session.setAttribute("email", user.getEmail());
             session.setAttribute("userType", "user");
-            
+            session.setAttribute("name", user.getName());
+            session.setAttribute("profile", user.getProfileName());
             
             String intendedDestination = (String) session.getAttribute("intendedDestination");
             if (intendedDestination != null) {
@@ -493,9 +536,55 @@ public class HomeController {
         
  
         session.removeAttribute("purchaseItems");
+        
  
         return "confirmpurchase";
     }
+	
+	@GetMapping("/profileUpdate")
+	public String profileUpdate(Model model,@RequestParam("email") String email) {
+		User user=userService.findByEmail(email);
+		model.addAttribute("user", user);
+		return "profileUpdate";	
+	}
+	
+	@PostMapping("/profileUpdate")
+    public String profileUpdate(
+            @ModelAttribute("user") User user,
+            @RequestParam("profileImage") MultipartFile file,
+            @RequestParam("deleteImage") boolean deleteImage,
+            Model model,
+            HttpSession session) throws IOException {
+
+	            String imageUUID = null; 
+	  		  if(!file.isEmpty()) 
+	  		  { 
+	  			
+	  		  imageUUID = file.getOriginalFilename();
+	  		  Path fileNameAndPath = Paths.get(uploadDir, imageUUID); 
+	  		  Files.write(fileNameAndPath, file.getBytes()); 
+	  		  user.setProfileName(imageUUID);
+	  		  }
+	  		  else if (deleteImage) {
+	  			user.setProfileName(null);  
+	  		  }
+            
+            userService.saveUser(user);
+            session.setAttribute("email", user.getEmail());
+            session.setAttribute("userType", "user");
+            session.setAttribute("name", user.getName());
+            session.setAttribute("profile", user.getProfileName());
+            
+            String intendedDestination = (String) session.getAttribute("intendedDestination");
+            if (intendedDestination != null) {
+            session.removeAttribute("intendedDestination");
+            return "redirect:" + intendedDestination;
+            }
+            
+            
+            return "redirect:/home";
+            }
+    
     
  
  
